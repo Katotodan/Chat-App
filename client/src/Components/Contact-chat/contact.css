@@ -1,0 +1,21 @@
+.contact-chat{
+    display: flex;
+    align-items: center;
+    gap: 0 2rem;
+    background-color: #f0f0f0;
+    margin-bottom: 0.5px;
+}
+.img{
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background-color: bisque;
+}
+.name-msg{
+    width: 10rem;
+}
+.name-msg > *{
+    padding: 0;
+    margin: 0;
+}
+
