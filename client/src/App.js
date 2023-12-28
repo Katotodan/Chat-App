@@ -9,13 +9,10 @@ import { Login } from './Components/Login/Login';
 import { Home } from './Components/Protected/Home';
 import axios from "axios";
 
-import { io } from "socket.io-client";
-const socket = io("http://localhost:5000");
-
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home/>,
+    element: <Home />,
   },
   {
     path: "/login",
@@ -59,3 +56,6 @@ export default App;
 
 // Working on textarea row adjustement
 // Working on message container
+// Working on search conversation 
+
+// Start working on socket io

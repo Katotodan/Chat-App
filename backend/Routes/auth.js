@@ -1,7 +1,8 @@
 const express = require('express');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
-const UserModel = require("../DB/DBmodel")
+const {UserModel, MsgModel} = require("../DB/DBmodel")
+const fs = require('fs')
 
 const router = express.Router();
 
@@ -45,6 +46,81 @@ router.post('/login/password', passport.authenticate('local', {
   successRedirect: '/',
   failureRedirect: '/login'
 }));
+
+// Sing up router
+router.post('/signup', async (req, res, next) => {
+  try {
+    const user = await UserModel.find({"username": req.body.username})
+    if(user.length < 1){
+      let imageBuffer = ""
+      if (req.body["imageUrl"]){
+        imageBuffer = fs.readFileSync(req.body["imageUrl"]) 
+        console.log(imageBuffer)
+      }
+      const user = await UserModel.create({
+        "username": req.body.username,
+        "password": req.body.password,
+        "imageUrl": imageBuffer
+      })
+      user.save() 
+      req.logIn(user, (err) =>{
+        console.log("before redicting")
+        if(err) { throw new Error('Something wrong happened, try again.') }
+        res.redirect('/')
+      })
+      
+    }else{
+      console.log('Something wrong appears')
+      throw new Error('Username already exist')
+    }
+  } catch (error) {
+    res.status(500).send(error)
+    
+  }
+ 
+});
+
+router.get("/conversationList/:currentUser", async function(req,res,next){
+  try {
+    const conversationList = await UserModel.find({"username" : { $nin: req.params.currentUser }}).limit(10)
+    res.json(conversationList)
+  } catch (error) {
+    res.send([])
+    
+  }
+})
+
+router.get('/getMsg/:userId/:destinationId', async function(req,res,next){
+  try {
+    const messages = await MsgModel.find({
+      $or: [
+        { sender: req.params.userId , receiver: req.params.destinationId},
+        { receiver: req.params.userId, sender: req.params.destinationId},
+      ],
+
+    })
+    res.send(messages)
+    
+  } catch (error) {
+    
+  }
+})
+
+router.post('/postMsg/:userId/:destinationId', async function(req,res,next){
+  try {
+    const addMsg = await MsgModel.create({
+      sender : req.params.userId,
+      receiver: req.params.destinationId ,
+      message: req.body.textMessage,
+    })
+    addMsg.save()
+
+    res.send(addMsg)
+  } catch (error) {
+    
+  }
+  
+})
 
 router.post('/logout', function(req, res, next) {
   req.logout(function(err) {

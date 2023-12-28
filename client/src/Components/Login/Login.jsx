@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from "react";
 import axios from "axios";
 import { CurrentUserContext } from "../../App";
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 
 export const Login = () =>{
     const {
@@ -53,7 +53,10 @@ export const Login = () =>{
                     type="password" 
                     onChange={handleChange}/>
                 </section>
-                <button type="submit">Sign in</button>
+                <div>
+                    Don't have an account ? <Link to="/signup">Sign Up</Link>
+                </div>
+                <button type="submit">Log in</button>
             </form>
         </div>
     )

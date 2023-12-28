@@ -1,96 +1,86 @@
-import React, {useContext, useEffect, useRef} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { CurrentUserContext } from "../../App";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
 import "./Home.css"
+import { Navbar } from "../Navbar/Navbar";
 
 import { ContactChat } from "../Contact-chat/Contact";
 import { Msg } from "../Msg/Message";
 
+import { socket } from "../../socket";
+
 
 export const Home = () =>{
-    useEffect(() =>{
-
-    }, [])
     const {
         currentUser,
         setCurrentUser
-      } = useContext(CurrentUserContext)
-      const logoutFunc = (e) =>{
-          e.preventDefault() 
-          axios.post("http://localhost:5000/logout", currentUser
-          , {
-            withCredentials: true, // Send credentials (cookies)
-            headers: {
-              'Content-Type': 'application/json',
-            //   Authorization: `Bearer ${sessionToken}`, // Include the session token in the Authorization header
-            },
+    } = useContext(CurrentUserContext)
+    const [isConnected, setIsConnected] = useState(socket.connected);
+    const [newMsg, setNewMsg] = useState("")
+
+    useEffect(() =>{ 
+        socket.connect()
+        socket.emit("user_connect", currentUser?.id)
+      
+        function onDisconnect() {
+            setIsConnected(false);
+            socket.emit("user_disconnect", currentUser.id)
         }
-        )
-        .then((res) => {
-            setCurrentUser(null)
-        })
-        .catch(err => console.log(err)) 
-
-    }
-    const contactList = [1,2,34,4,5,1,2,3,4]
-    const contact = contactList.map((element, index) =>{
-        return <ContactChat/>
-    })
-
-    const msgList = [1,2,34,4,5,14]
-    const messages = msgList.map((element, index) =>{
-        return <Msg/>
-    })
-    const textArea = useRef(null)
-
-    const adjustRows = () => {
+    
+        function sendSpecificMsg(message) {
+            alert("alert user")
+            setNewMsg(message)
+        }     
+      
+        socket.on('disconnect', onDisconnect);
+        socket.on('sendSpecificMsg', sendSpecificMsg);
+    
+        return () => {
+        socket.off('connect');
+        socket.off('disconnect', onDisconnect);
+        socket.off('sendSpecificMsg', sendSpecificMsg);
+        };
         
-        const lines = textArea.current.value.split("\n").length;
-        console.log(textArea.current.value)
-        textArea.current.rows = lines;
-      }
+    },[]) 
+    
 
+    const [destination, setDestination] = useState("")
+    const [destinationName, setDestinationName] = useState("")
+    
+    const toUser = (id) =>{
+        setDestination(id) 
+    }
+    const toUser_name = (name) =>{
+        setDestinationName(name)
+    }
+    
+    
     return(        
         <div>
             {
                 currentUser ? (
                     <>
-                        <nav>
-                            <div>
-                                Logo
-                            </div>
-                            
-                            <div className="user">
-                                <div>
-                                    <p>{currentUser["username"]}</p>
-                                    
-                                    <span className="userImage"></span>
-                                </div>
-                                <form onSubmit={logoutFunc}>
-                                    <button type="submit">Log out</button>
-                                </form>
-                            </div>
-                        </nav>
+                        <Navbar/>
                         <main>
-                            <div className="contacts">
-                                {contact}
-                            </div>
+                            <ContactChat setDestination = {toUser} 
+                            setDestinationName ={toUser_name} currentUser ={currentUser.username}/>
                             <div className="message--container">
-                                <div className="messages">
-                                    {messages}
-                                </div>
-                                <div className="Search-bar">
-                                    <textarea name="" id="" rows="1"  ref={textArea} onChange={adjustRows}></textarea>
-                                    <button>Send</button>
-                                </div>
+                            {destination ? (
+                                <Msg destination={destination} 
+                                  destinationName={destinationName} 
+                                  message = {newMsg}
+                                />
+                            ): (
+                                <>
+                                    <h2>Hey! Welcome to U-message!!!</h2>
+                                    <h3>Select an user to start a conversation 😎😎😎</h3>
+                                </>
+                            )}
+                                
                             </div>
-
                         </main>
-                        
-                        
                     </>
-                
                 ) : <Navigate to='/login'/>
             }
         </div>
