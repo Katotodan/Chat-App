@@ -2,9 +2,10 @@ const express = require('express');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const {UserModel, MsgModel} = require("../DB/DBmodel")
-const fs = require('fs')
+const multer = require('multer')
 
 const router = express.Router();
+const upload = multer()
 
 passport.use(new LocalStrategy(async function verify(username, password, cb) {
   const user = await UserModel.find({"username": username})
@@ -19,14 +20,14 @@ passport.use(new LocalStrategy(async function verify(username, password, cb) {
       console.log(' user found')
       return cb(null, user[0])
     }
-  }
+  } 
   
 }));
 
 passport.serializeUser(function(user, cb) {
-    cb(null, { id: user.id, username: user.username });
+    cb(null, { id: user.id, username: user.username, image: user.image });
 });
-
+ 
 passport.deserializeUser(function(user, cb) {
     return cb(null, user); 
 });
@@ -48,23 +49,22 @@ router.post('/login/password', passport.authenticate('local', {
 }));
 
 // Sing up router
-router.post('/signup', async (req, res, next) => {
+router.post('/signup', upload.single('image'), async (req, res, next) => {
   try {
+   
     const user = await UserModel.find({"username": req.body.username})
     if(user.length < 1){
       let imageBuffer = ""
-      if (req.body["imageUrl"]){
-        imageBuffer = fs.readFileSync(req.body["imageUrl"]) 
-        console.log(imageBuffer)
-      }
+      if (req.file.buffer){
+        imageBuffer = req.file.buffer
+      } 
       const user = await UserModel.create({
         "username": req.body.username,
         "password": req.body.password,
-        "imageUrl": imageBuffer
+        "image": imageBuffer
       })
       user.save() 
       req.logIn(user, (err) =>{
-        console.log("before redicting")
         if(err) { throw new Error('Something wrong happened, try again.') }
         res.redirect('/')
       })
@@ -74,7 +74,8 @@ router.post('/signup', async (req, res, next) => {
       throw new Error('Username already exist')
     }
   } catch (error) {
-    res.status(500).send(error)
+    console.log(error)
+    // res.status(500).send(error)
     
   }
  

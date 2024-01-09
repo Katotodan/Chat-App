@@ -11,14 +11,15 @@ import { Msg } from "../Msg/Message";
 import { socket } from "../../socket";
 
 
-export const Home = () =>{
+export const Home = () =>{ 
     const {
         currentUser,
         setCurrentUser
     } = useContext(CurrentUserContext)
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [newMsg, setNewMsg] = useState("")
-
+    
+    
     useEffect(() =>{ 
         socket.connect()
         socket.emit("user_connect", currentUser?.id)

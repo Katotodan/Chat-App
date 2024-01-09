@@ -16,21 +16,22 @@ export const SingUp = () =>{
      // Selecting a file
      const selectImgBtn = useRef(null)
      const imgContainer = useRef(null)
-     const [imageUrl, setImageUrl] = useState("")
+     const [image, setImage] = useState(null)
 
     const singUpFunc = (e) =>{
         e.preventDefault() 
+
         axios.post("http://localhost:5000/signup", {
             ...userInfo, 
-            "imageUrl" : imageUrl
+            "image": image
         }, {
             withCredentials: true, // Send credentials (cookies)
             headers: {
-              'Content-Type': 'application/json',
+                'Content-Type': 'multipart/form-data',
              // Authorization: `Bearer ${sessionToken}`, // Include the session token in the Authorization header
             },
         })
-        .then((res) => {
+        .then((res) => { 
             setCurrentUser(res.data)
         })
         .catch(err => {
@@ -50,11 +51,9 @@ export const SingUp = () =>{
     // Selecting a file
     
     const addingImg = async () =>{
-        const file = selectImgBtn.current.files[0]
-        if(file){
-            const image = URL.createObjectURL(file) 
-            setImageUrl(image)
-            imgContainer.current.src = image  
+        if(selectImgBtn.current.files[0]){
+            setImage(selectImgBtn.current.files[0])
+            imgContainer.current.src = URL.createObjectURL(selectImgBtn.current.files[0])   
         }
     }
     

@@ -29,6 +29,10 @@ export const Navbar = () =>{
       .catch(err => console.log(err)) 
     
     }
+    const buffer = new Uint8Array([currentUser?.image]); 
+    const blob =   new Blob([buffer], { type: 'image/jpeg' }); 
+    const url = URL.createObjectURL(blob)
+    console.log(url)
 
     return (
         <nav>
@@ -39,8 +43,7 @@ export const Navbar = () =>{
             <div className="user">
                 <div>
                     <p>{currentUser["username"]}</p>
-                    
-                    <span className="userImage"></span>
+                    <img src={url} alt="" className="userImage" />
                 </div>
                 <form onSubmit={logoutFunc}>
                     <button type="submit">Log out</button>
