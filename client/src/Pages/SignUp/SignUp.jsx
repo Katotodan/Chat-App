@@ -5,13 +5,10 @@ import { Navigate, Link } from "react-router-dom";
 //import "./signup.css"
 
 export const SingUp = () =>{
-    const {
-        currentUser,
-        setCurrentUser
-    } = useContext(CurrentUserContext)
       
     const [userInfo, setUserInfo] = useState({"username": "", "password": ""})
     const [errorMsg, setErrorMsg] = useState(null)
+    const [navigateToHome, setNavigateToHome] = useState(false)
 
      // Selecting a file
      const selectImgBtn = useRef(null)
@@ -20,24 +17,24 @@ export const SingUp = () =>{
 
     const singUpFunc = (e) =>{
         e.preventDefault() 
-
-        axios.post("http://localhost:5000/signup", {
-            ...userInfo, 
+        const userData = {
+            ...userInfo,
             "image": image
-        }, {
+        }        
+
+        axios.post("http://localhost:5000/signup", userData, {
             withCredentials: true, // Send credentials (cookies)
             headers: {
-                'Content-Type': 'multipart/form-data',
-             // Authorization: `Bearer ${sessionToken}`, // Include the session token in the Authorization header
+              'Content-Type': 'application/json',
+            //   Authorization: `Bearer ${sessionToken}`, // Include the session token in the Authorization header
             },
         })
-        .then((res) => { 
-            setCurrentUser(res.data)
+        .then(res => {
+            // Navigate to main
+            setNavigateToHome(true)
         })
         .catch(err => {
-            
-            setErrorMsg(err)
-            console.log(err)
+            setErrorMsg(err.response["data"])
         })
     }
     const handleChange = (e) =>{
@@ -51,17 +48,22 @@ export const SingUp = () =>{
     // Selecting a file
     
     const addingImg = async () =>{
-        if(selectImgBtn.current.files[0]){
-            setImage(selectImgBtn.current.files[0])
-            imgContainer.current.src = URL.createObjectURL(selectImgBtn.current.files[0])   
-        }
+        const file = selectImgBtn.current.files[0]
+        if(file){
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImage(reader.result);
+            };
+            reader.readAsDataURL(file);
+            imgContainer.current.src =  URL.createObjectURL(selectImgBtn.current.files[0]) 
+        } 
     }
     
     return(
         <div>
-            {currentUser == null ? <></> : <Navigate to='/'/>}
+            {navigateToHome && <Navigate to="/"/>}
             <h1>Sign up</h1>
-            {/* {errorMsg && <>{errorMsg}</>} */}
+            {errorMsg && <>{errorMsg}</>}
             <form onSubmit={singUpFunc}
             >
                 <section>

@@ -1,6 +1,7 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const authRouter = require("./Routes/auth")
+const messageRouter = require("./Routes/messageRouter")
 const cors = require('cors')
 const passport = require('passport');
 const session = require('express-session');
@@ -39,6 +40,7 @@ app.use(session({
 })); 
 app.use(passport.authenticate('session'));
 app.use("/", authRouter)
+app.use("/", messageRouter)
 
 
 const httpServer = createServer(app);

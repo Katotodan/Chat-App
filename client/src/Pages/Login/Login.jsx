@@ -8,7 +8,6 @@ export const Login = () =>{
         currentUser,
         setCurrentUser
     } = useContext(CurrentUserContext)
-    console.log(currentUser)
       
     const [userInfo, setUserInfo] = useState({"username": "", "password": ""})
     const loginFunc = (e) =>{
@@ -35,7 +34,7 @@ export const Login = () =>{
     
     return(
         <div>
-            {currentUser == null ? <></> : <Navigate to='/'/>}
+            {currentUser && <Navigate to="/"/>}
             <h1>Sign in</h1>
             <form onSubmit={loginFunc}
             >
