@@ -1,42 +1,39 @@
 import React,{useRef, useContext, useState, useEffect} from "react";
 import "./Message.css"
 import axios from "axios";
-import { CurrentUserContext } from "../../App";
 import { socket } from "../../socket";
 
 
-export const Msg = ({destination, destinationName, message}) =>{
-
-    const {
-        currentUser,
-        setCurrentUser
-    } = useContext(CurrentUserContext)
-
+export const Msg = ({destination, destinationName, message, user}) =>{
     const [msgList, setMsgList] = useState([])
    
+    // Get the message
     useEffect(() =>{
-        axios.get(`http://localhost:5000/getMsg/${currentUser.id}/${destination}`,{
+        axios.get(`http://localhost:5000/getMsg/${user.id}/${destination}`,{
             withCredentials: true, // Send credentials (cookies)
             headers: {
             'Content-Type': 'application/json',
             },
         })
         .then((res) => {
-            setMsgList(prevArray => [...res.data])
+            setMsgList(res.data)
         })
         .catch((err) => console.log(err))
     }, [destination])
     
     useEffect(() =>{
-        setMsgList(prev => [
-            ...prev, 
-            {
-                "message": message,
-                "sender": "",
-                "receiver": currentUser.id,
-                "time": new Date()
-            }
-        ])
+        if(message[0] ===destination ){
+            setMsgList(prev => [
+                ...prev, 
+                {
+                    "message": message[1],
+                    "sender": "",
+                    "receiver": user.id,
+                    "time": new Date()
+                }
+            ])  
+        }
+        
     }, [message])
 
     const textArea = useRef(null)
@@ -62,7 +59,7 @@ export const Msg = ({destination, destinationName, message}) =>{
     })
     const sendMsg = async (e) =>{
         e.preventDefault()
-        axios.post(`http://localhost:5000/postMsg/${currentUser.id}/${destination}`,
+        axios.post(`http://localhost:5000/postMsg/${user.id}/${destination}`,
         {"textMessage" : textArea.current.value}, {
             withCredentials: true, // Send credentials (cookies)
             headers: {
@@ -74,7 +71,7 @@ export const Msg = ({destination, destinationName, message}) =>{
             setMsgList(prev => [...prev, 
                 {
                     "message": textArea.current.value,
-                    "sender": currentUser.id,
+                    "sender": user.id,
                     "receiver": destination,
                     "time": new Date()
                 }
@@ -90,7 +87,7 @@ export const Msg = ({destination, destinationName, message}) =>{
     //         {
     //             "message": message,
     //             "sender": "",
-    //             "receiver": currentUser.id,
+    //             "receiver": user.id,
     //             "time": new Date()
     //         }
     //     ])
@@ -99,7 +96,7 @@ export const Msg = ({destination, destinationName, message}) =>{
     return( 
         <>
             <div className="messages" >
-                <h2>{destinationName}</h2>
+                <h2>To {destinationName}</h2>
                 {messages}
             </div>
             <form className="Search-bar" onSubmit={sendMsg}>

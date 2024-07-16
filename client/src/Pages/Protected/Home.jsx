@@ -24,18 +24,18 @@ export const Home = () =>{
             socket.emit("user_disconnect", user.id)
         }
     
-        function sendSpecificMsg(message) {
+        function sendSpecificMsg([senderId, message]) {
             alert("alert user")
-            setNewMsg(message)
+            setNewMsg([senderId, message])
         }     
       
         socket.on('disconnect', onDisconnect);
         socket.on('sendSpecificMsg', sendSpecificMsg);
     
         return () => {
-        socket.off('connect');
-        socket.off('disconnect', onDisconnect);
-        socket.off('sendSpecificMsg', sendSpecificMsg);
+            socket.disconnect();
+            socket.off('disconnect', onDisconnect);
+            socket.off('sendSpecificMsg', sendSpecificMsg);
         };
         
     },[]) 
@@ -57,19 +57,21 @@ export const Home = () =>{
             <Navbar user={user}/>
             <main>
                 <ContactChat setDestination = {toUser} 
-                setDestinationName ={toUser_name} currentUser ={user.username}/>
+                setDestinationName ={toUser_name} currentUser ={user.username}
+                />
                 <div className="message--container">
-                {destination ? (
-                    <Msg destination={destination} 
-                        destinationName={destinationName} 
-                        message = {newMsg}
-                    />
-                ): (
-                    <>
-                        <h2>Hey {user.username}! Welcome to U-message!!!</h2>
-                        <h3>Select an user to start a conversation 😎😎😎</h3>
-                    </>
-                )}
+                    {destination ? (
+                        <Msg destination={destination} 
+                            destinationName={destinationName} 
+                            message = {newMsg}
+                            user = {user}
+                        />
+                    ): (
+                        <>
+                            <h2>Hey {user.username}! Welcome to U-message!!!</h2>
+                            <h3>Select an user to start a conversation 😎😎😎</h3>
+                        </>
+                    )}
                     
                 </div>
             </main>

@@ -46,4 +46,4 @@ function App() {
 
 export default App;
 
-// Start working on message functionnality, select a user then ...
+// Delete a message, search for contact and style

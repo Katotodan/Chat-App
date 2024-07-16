@@ -1,8 +1,6 @@
 const express = require('express');
 const {UserModel, MsgModel} = require("../DB/DBmodel")
-// const multer = require('multer')
 const router = express.Router();
-// const upload = multer()
 
 router.get("/conversationList/:currentUser", async function(req,res,next){
     try {
@@ -41,7 +39,7 @@ router.post('/postMsg/:userId/:destinationId', async function(req,res,next){
   
       res.send(addMsg)
     } catch (error) {
-      
+      console.log(error);
     }
     
 })

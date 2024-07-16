@@ -23,8 +23,8 @@ const store = new MongoDBStore({
 
 const app = express()
 
-app.use(express.json())
-app.use(express.urlencoded({extended: false}))
+app.use(express.json({limit: '50mb'}))
+app.use(express.urlencoded({limit: '50mb', extended: true, parameterLimit: 50000})) 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', 'http://localhost:3000'); // Replace with your React app's origin
     res.header('Access-Control-Allow-Credentials', 'true');
@@ -53,6 +53,13 @@ const io = new Server(httpServer, {
 });
 
 let onlineUser = []
+const getSenderId = (socketId) =>{
+    for(let i=0; i<onlineUser.length; i++){
+        if(onlineUser[i]["socketId"] == socketId){
+            return onlineUser[i]["userId"]
+        }
+    }
+}
 io.on("connection", (socket) => {
     socket.on("user_connect", (userId) =>{
         if(onlineUser.length < 1){
@@ -66,22 +73,22 @@ io.on("connection", (socket) => {
                 if(i == onlineUser.length - 1){
                     onlineUser.push({"userId": userId, "socketId": socket.id})
                     console.log('New user has been connected')
-                }
+                } 
             }
         }  
-        console.log(' user has been connected')  
+        console.log(onlineUser)   
     })
 
     socket.on("messageSend", ([message, toUserId]) =>{
-        console.log("how mamy time?") 
         for(let i = 0; i < onlineUser.length; i++){
             if(onlineUser[i]["userId"] == toUserId){
+
                 console.log(onlineUser[i]["socketId"])
-                io.to(onlineUser[i]["socketId"]).emit("sendSpecificMsg", message)
+                io.to(onlineUser[i]["socketId"]).emit("sendSpecificMsg", [getSenderId(socket.id), message])
                 break  
             }  
             
-        }    
+        }     
     })
       
   // ... 
