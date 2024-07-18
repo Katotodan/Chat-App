@@ -2,6 +2,7 @@ import React,{useRef, useContext, useState, useEffect} from "react";
 import "./Message.css"
 import axios from "axios";
 import { socket } from "../../socket";
+import { SingleMsg } from "./SingleMsg";
 
 
 export const Msg = ({destination, destinationName, message, user}) =>{
@@ -37,24 +38,53 @@ export const Msg = ({destination, destinationName, message, user}) =>{
     }, [message])
 
     const textArea = useRef(null)
+    let previousDate = []
+
     const adjustRows = () => {
         const lines = textArea.current.value.split("\n").length;
         textArea.current.rows = lines;
     }
 
+
+
     const messages = msgList.map((element, index) =>{
+
+        const dateObject = new Date(element.time);
+        const inputYear = dateObject.getFullYear()
+        const inputMonth = dateObject.getMonth()
+        const inputDay = dateObject.getDate()
+
+        const currentYear = new Date().getFullYear()
+        const currentMonth = new Date().getMonth()
+        const currentDay = new Date().getDate()
+
+        const newTime = [inputDay, inputMonth, inputYear]
+        let outPutDate = ""
+        if(inputDay === currentDay && inputMonth === currentMonth && inputYear === currentYear){
+            if(newTime[0] !== previousDate[0]){
+                previousDate = newTime
+                outPutDate = "Today"
+            }
+        }else if(inputDay === currentDay -1 && inputMonth === currentMonth && inputYear === currentYear){
+            if(newTime[0] !== previousDate[0]){
+                previousDate = newTime
+                outPutDate = "Yesterday"
+            }
+        }else{
+            if(newTime[0] !== previousDate[0] && newTime[1] !== previousDate[1] && newTime[2] !== previousDate[2]){
+                previousDate = newTime
+                outPutDate = inputDay + "th " + inputMonth + ", " + inputYear
+            }
+        }
+
+
+
         return (
-            <div key= {index} 
-            className={element.receiver == destination ?  " msg-container other" : "msg-container me"}>
-                <div>
-                    <div className="msg">
-                        {element.message}
-                    </div>
-                    <div className="time">
-                        {new Date(element.time).getHours()}: {new Date(element.time).getMinutes()}
-                    </div>
-                </div>
+            <div key={index}>
+                <h3 className="message-date">{outPutDate}</h3>
+                <SingleMsg msg={element} destination={destination}/>
             </div>
+            
         )
     })
     const sendMsg = async (e) =>{
@@ -80,23 +110,10 @@ export const Msg = ({destination, destinationName, message, user}) =>{
         .catch(err => console.log(err))   
     }
 
-    // socket?.on("sendSpecificMsg", (message) =>{
-    //     alert('Someone has send you a message')
-    //     setMsgList(prev => [
-    //         ...prev, 
-    //         {
-    //             "message": message,
-    //             "sender": "",
-    //             "receiver": user.id,
-    //             "time": new Date()
-    //         }
-    //     ])
-    // })
-
     return( 
         <>
             <div className="messages" >
-                <h2>To {destinationName}</h2>
+                <h2>Chat with {destinationName}</h2>
                 {messages}
             </div>
             <form className="Search-bar" onSubmit={sendMsg}>

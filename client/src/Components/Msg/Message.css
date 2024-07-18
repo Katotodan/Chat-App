@@ -13,6 +13,10 @@
     margin-bottom: 0.5rem;
     border-radius: 10px;
 }
+.message-date{
+    text-align: center;
+    margin: 0.5rem;
+}
 .msg-container.other{
     justify-content: start;
 }
@@ -22,4 +26,15 @@
 .msg-container.me{
     justify-content: end;
 }
+.delete{
+    font-size: 1.3rem;
+    color: red;
+    position: relative;
+    top: 0;
+    left: 1rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    height: 1rem;
+}
+
 

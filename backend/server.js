@@ -28,6 +28,7 @@ app.use(express.urlencoded({limit: '50mb', extended: true, parameterLimit: 50000
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', 'http://localhost:3000'); // Replace with your React app's origin
     res.header('Access-Control-Allow-Credentials', 'true');
+    res.header("Access-Control-Allow-Methods", "DELETE, POST, GET, OPTIONS");
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
 });
@@ -77,7 +78,7 @@ io.on("connection", (socket) => {
             }
         }  
         console.log(onlineUser)   
-    })
+    }) 
 
     socket.on("messageSend", ([message, toUserId]) =>{
         for(let i = 0; i < onlineUser.length; i++){
@@ -90,6 +91,12 @@ io.on("connection", (socket) => {
             
         }     
     })
+
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+        onlineUser = onlineUser.filter(obj => obj.socketId !== socket.id)
+        console.log(onlineUser);
+      });
       
   // ... 
 });

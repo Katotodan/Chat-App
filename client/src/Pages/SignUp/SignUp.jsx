@@ -34,6 +34,7 @@ export const SingUp = () =>{
             setNavigateToHome(true)
         })
         .catch(err => {
+            console.log(err);
             setErrorMsg(err.response["data"])
         })
     }

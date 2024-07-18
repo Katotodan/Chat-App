@@ -26,7 +26,7 @@ export const ContactChat = ({setDestination , setDestinationName, currentUser})=
                 setDestinationName(element.username)
             }}>
                 <div className="photo">
-                    <img src={element.imageUrl} alt="" className="img" />
+                    <img src={element.image} alt="" className="img" />
                 </div>
                 <div className="name-msg">
                     <p className="name">{element.username}</p>
@@ -49,7 +49,10 @@ export const ContactChat = ({setDestination , setDestinationName, currentUser})=
                         <button>&#8634;</button>
                     </form>
                 </div>
-                {contact}
+                <div className="contact_container">
+                    {contact}
+                </div>
+                
             </div>
         </>
     )

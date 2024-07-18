@@ -12,6 +12,17 @@ router.get("/conversationList/:currentUser", async function(req,res,next){
     }
 })
 
+router.get("/deleteMsg/:id", async function(req,res,next){
+  try {
+    // Find sms and delete it
+    const msg = MsgModel.findOneAndDelete({"_id": req.params.id})
+    res.status(200).send("Message is deleted")
+  } catch (error) {
+    res.status(500).send("Something went wrong")
+    
+  }
+})
+
 router.get('/getMsg/:userId/:destinationId', async function(req,res,next){
     try {
       const messages = await MsgModel.find({
@@ -46,3 +57,4 @@ router.post('/postMsg/:userId/:destinationId', async function(req,res,next){
 
 module.exports = router
 
+// Working on delete router

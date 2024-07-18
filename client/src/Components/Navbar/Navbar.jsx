@@ -2,6 +2,7 @@ import React, {useState} from "react"
 import axios from "axios"
 import "./navbar.css"
 import { Navigate } from "react-router-dom"
+import { socket } from "../../socket"
 
 export const Navbar = ({user}) =>{
     const [redirectUser, setRedirectUser] = useState(false)
@@ -14,14 +15,15 @@ export const Navbar = ({user}) =>{
             'Content-Type': 'application/json',
           //   Authorization: `Bearer ${sessionToken}`, // Include the session token in the Authorization header
           },
-      }
-      )
-      .then((res) => {
-        //  Redirect to login
-        setRedirectUser(true)
+        }
+        )
+        .then((res) => {
+            //  Redirect to login
+            socket.disconnect()
+            setRedirectUser(true)
 
-      })
-      .catch(err => console.log(err)) 
+        })
+        .catch(err => console.log(err)) 
     
     }
     const buffer = new Uint8Array([user.image]); 

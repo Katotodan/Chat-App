@@ -25,7 +25,6 @@ export const Home = () =>{
         }
     
         function sendSpecificMsg([senderId, message]) {
-            alert("alert user")
             setNewMsg([senderId, message])
         }     
       
