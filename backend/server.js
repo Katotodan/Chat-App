@@ -35,7 +35,7 @@ app.use((req, res, next) => {
 
 app.use(session({ 
     secret: 'keyboard cat',
-    resave: false,
+    resave: false, 
     saveUninitialized: false,
     store: store
 })); 
@@ -77,14 +77,11 @@ io.on("connection", (socket) => {
                 } 
             }
         }  
-        console.log(onlineUser)   
     }) 
 
     socket.on("messageSend", ([message, toUserId]) =>{
         for(let i = 0; i < onlineUser.length; i++){
             if(onlineUser[i]["userId"] == toUserId){
-
-                console.log(onlineUser[i]["socketId"])
                 io.to(onlineUser[i]["socketId"]).emit("sendSpecificMsg", [getSenderId(socket.id), message])
                 break  
             }  
@@ -95,7 +92,6 @@ io.on("connection", (socket) => {
     socket.on('disconnect', () => {
         console.log('user disconnected');
         onlineUser = onlineUser.filter(obj => obj.socketId !== socket.id)
-        console.log(onlineUser);
       });
       
   // ... 

@@ -56,7 +56,7 @@ export const Home = () =>{
             <Navbar user={user}/>
             <main>
                 <ContactChat setDestination = {toUser} 
-                setDestinationName ={toUser_name} currentUser ={user.username}
+                setDestinationName ={toUser_name} currentUser ={user.username} currentUserId={user.id}
                 />
                 <div className="message--container">
                     {destination ? (

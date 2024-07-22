@@ -1,25 +1,17 @@
 const express = require('express');
 const {UserModel, MsgModel} = require("../DB/DBmodel")
 const router = express.Router();
+const { chatList } = require('../Controller/messageController')
 
-router.get("/conversationList/:currentUser", async function(req,res,next){
-    try {
-      const conversationList = await UserModel.find({"username" : { $nin: req.params.currentUser }}).limit(10)
-      res.json(conversationList)
-    } catch (error) {
-      res.send([])
-      
-    }
-})
+router.get("/conversationList/:currentUserId", chatList)
 
-router.get("/deleteMsg/:id", async function(req,res,next){
+router.delete("/deleteMsg/:id", async function(req,res){
   try {
     // Find sms and delete it
-    const msg = MsgModel.findOneAndDelete({"_id": req.params.id})
+    const msg = await MsgModel.findByIdAndDelete(req.params.id)
     res.status(200).send("Message is deleted")
   } catch (error) {
     res.status(500).send("Something went wrong")
-    
   }
 })
 

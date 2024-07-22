@@ -18,15 +18,15 @@ export const SingleMsg = ({msg, destination}) => {
               },
             }).then((res) => {
                 //  Display none the message
-                msgRef.current.display = "none"
+                msgRef.current.style.display = "none"
     
             }).catch(err => console.log(err)
         ) 
     }
   return (
     <div className={msg.receiver == destination ?  "msg-container me" : "msg-container other"}
-    ref={msgRef} onClick={handleMsgClick}>
-        <div>
+    ref={msgRef}>
+        <div onClick={handleMsgClick}>
             <div className="msg">
                 {msg.message}
             </div>

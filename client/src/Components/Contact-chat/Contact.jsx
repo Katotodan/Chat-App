@@ -2,11 +2,11 @@ import React, {useEffect, useState} from "react";
 import "./contact.css"
 import axios from "axios";
 
-export const ContactChat = ({setDestination , setDestinationName, currentUser})=>{
+export const ContactChat = ({setDestination , setDestinationName, currentUser, currentUserId})=>{
     const [contacts, setContact] = useState([])
 
     useEffect( () => {
-        axios.get(`http://localhost:5000/conversationList/${currentUser}`,{
+        axios.get(`http://localhost:5000/conversationList/${currentUserId}`,{
             withCredentials: true, // Send credentials (cookies)
             headers: {
             'Content-Type': 'application/json',
@@ -14,7 +14,7 @@ export const ContactChat = ({setDestination , setDestinationName, currentUser})=
             },
         })
         .then((res) => {
-            setContact(prevArray => [...res.data])
+            setContact([...res.data])
         })
         .catch((err) => console.log(err))
     }, [])
