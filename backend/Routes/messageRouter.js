@@ -1,7 +1,7 @@
 const express = require('express');
 const {UserModel, MsgModel} = require("../DB/DBmodel")
 const router = express.Router();
-const { chatList } = require('../Controller/messageController')
+const { chatList,searchByName } = require('../Controller/messageController')
 
 router.get("/conversationList/:currentUserId", chatList)
 
@@ -46,7 +46,7 @@ router.post('/postMsg/:userId/:destinationId', async function(req,res,next){
     }
     
 })
-
+router.get("/contact/:contactName", searchByName)
 module.exports = router
 
 // Working on delete router

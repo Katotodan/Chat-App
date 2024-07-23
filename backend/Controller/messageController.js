@@ -16,31 +16,27 @@ const chatList = async function(req,res,next){
         {
           $group: {
             _id: { sender: "$sender", receiver: "$receiver" },
-            latestMessage: { $first: "$$ROOT" }
           }
         },
 
-        ])
-
-        // Filtering the conversationList
-        const conversationList = conversations.map(element =>{
-            console.log(element._id["sender"]);
-            if(element._id["sender"] === req.params.currentUserId){
-                return(
-                    {
-                        id: element._id["receiver"],
-                        lastmessage: element.latestMessage["message"]
-                    }
-                )
-            }
-            return(
-                {
-                    id: element._id["sender"],
-                    lastmessage: element.latestMessage["message"]
-                }
-            )
-        })
-      res.json(conversationList)
+      ])
+      // Filtering the conversationList
+      const conversationList = conversations.map(element =>{
+          if(element._id["sender"] === req.params.currentUserId){
+            return({
+              _id: element._id["receiver"],
+            })
+          }
+          return({
+            _id: element._id["sender"],
+          })
+      })
+      // Get all the user inside conversationList
+      console.log(conversationList);
+      const users = await UserModel.find({
+        $or: conversationList
+      }).exec()
+      res.json(users)
     } catch (error) {
       console.log(error);
       res.send([])
@@ -48,5 +44,16 @@ const chatList = async function(req,res,next){
     }
 }
 
+const searchByName = async (req,res,next)=>{
+  try {
+    // Search user with username simular to req.params.contactName
+    const data = req.params.contactName
+    const user = await UserModel.find({"username": { $regex: new RegExp(data, 'i')}})
+    res.status(200).json(user)
+  } catch (error) {
+    
+  }
+}
+
 // Getting all the chatList, I have just the id and last message for now.
-module.exports = {chatList}
+module.exports = {chatList, searchByName}
