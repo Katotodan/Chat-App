@@ -54,6 +54,36 @@ const searchByName = async (req,res,next)=>{
     
   }
 }
+const lastMsg = async(req, res, next)=>{
+  try {
+    const messages = await MsgModel.aggregate([
+      // Find all message with sender or receiver is equal to currentUserId
+      {
+        $match: {
+          $or: [
+            {
+              $and: [
+                { sender: req.params.constactId },
+                { receiver: req.params.userId }
+              ],
+              $and: [
+                { receiver: req.params.constactId },
+                { sender: req.params.userId }
+              ],
+            }
+          ]
+        }
+      },
+    ])
+    res.json({
+      "lastMsg": messages.at(-1)["message"],
+      "time": messages.at(-1)["time"]
+    })
+
+  } catch (error) {
+    
+  }
+}
 
 // Getting all the chatList, I have just the id and last message for now.
-module.exports = {chatList, searchByName}
+module.exports = {chatList, searchByName, lastMsg}

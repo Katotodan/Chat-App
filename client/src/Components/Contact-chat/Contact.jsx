@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useRef} from "react";
 import "./contact.css"
 import axios from "axios";
+import { SingleContact } from "./SingleContact";
 
 export const ContactChat = ({setDestination , setDestinationName, currentUser, currentUserId})=>{
     const [contacts, setContact] = useState([])
@@ -42,25 +43,14 @@ export const ContactChat = ({setDestination , setDestinationName, currentUser, c
     const handleSearch = (e) =>{
         setSearchUserValue(e.target.value)
     }
+    const displayMsg = (element) =>{
+        setDestination(element._id)
+        setDestinationName(element.username)
+    }
 
     const contact = contacts.map((element, index) =>{
-        return (
-            <div className="contact-chat" key={element._id} onClick = {() => {
-                setDestination(element._id)
-                setDestinationName(element.username)
-            }}>
-                <div className="photo">
-                    <img src={element.image} alt="" className="img" />
-                </div>
-                <div className="name-msg">
-                    <p className="name">{element.username}</p>
-                    <p>Last message</p>
-                </div>
-                <div className="time">
-                    1:00 pm
-                </div>
-            </div>
-        )
+        return <SingleContact element={element} key={element._id} 
+        displayMsg={displayMsg} currentUserId ={currentUserId}/>
     })
 
     return(
@@ -83,4 +73,4 @@ export const ContactChat = ({setDestination , setDestinationName, currentUser, c
     )
 }
 
-// Put single msg in its own component, then online date and last message
+//then online date and last message 
