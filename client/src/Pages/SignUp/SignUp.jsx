@@ -14,6 +14,7 @@ export const SingUp = () =>{
      const selectImgBtn = useRef(null)
      const imgContainer = useRef(null)
      const [image, setImage] = useState(null)
+     const [displayImg, setDisplayImg] = useState(false)
 
     const singUpFunc = (e) =>{
         e.preventDefault() 
@@ -34,7 +35,7 @@ export const SingUp = () =>{
             setNavigateToHome(true)
         })
         .catch(err => {
-            console.log(err);
+            console.log(err); 
             setErrorMsg(err.response["data"])
         })
     }
@@ -42,56 +43,79 @@ export const SingUp = () =>{
         setUserInfo({
             ...userInfo,
             [e.target.name] : e.target.value,
-           
         })
     }
     
     // Selecting a file
     
-    const addingImg = async () =>{
+    const addingImg = async (e) =>{
+        console.log(e.target);
         const file = selectImgBtn.current.files[0]
         if(file){
             const reader = new FileReader();
+            
             reader.onloadend = () => {
                 setImage(reader.result);
             };
             reader.readAsDataURL(file);
-            imgContainer.current.src =  URL.createObjectURL(selectImgBtn.current.files[0]) 
+            selectImgBtn.current.textContent = "File selected"
+            imgContainer.current.src =  URL.createObjectURL(file) 
+            setDisplayImg(true)
         } 
+    }
+    const removePhoto = ()=>{
+        setImage(null)
+        imgContainer.current.src=""
+        setDisplayImg(false)
     }
     
     return(
-        <div>
-            {navigateToHome && <Navigate to="/"/>}
-            <h1>Sign up</h1>
-            {errorMsg && <>{errorMsg}</>}
-            <form onSubmit={singUpFunc}
-            >
-                <section>
-                    <label htmlFor="username">Username</label>
-                    <input id="username" 
-                    name="username" 
-                    type="text" 
-                    onChange={handleChange}/>
-                </section>
-                <section>
-                    <label htmlFor="current-password">Password</label>
-                    <input id="current-password" 
-                    name="password" 
-                    type="password" 
-                    onChange={handleChange}/>
-                </section>
-                <section>
-                    <label htmlFor="current-password">Add a profil picture</label>
-                    <input type="file" id="imageInput" onChange={addingImg} ref={selectImgBtn} accept="image/*"/>
-                    <img id="imageContainer" ref={imgContainer}></img>
-                </section>
-                <div>
-                    Already have an account? <Link to={"/login"}>Log in</Link>
-                </div>
-                <button type="submit">Sign Up</button>
-            </form>
-        </div>
+        <section className="min-h-screen bg-slate-300 flex items-center justify-center pb-4">
+            <div className=" md:w-2/4 md:h-3/4 border-2 border-black rounded-md form-container">
+                {navigateToHome && <Navigate to="/"/>}
+                <h1 className="text-center text-5xl font-sans my-8">Sign up</h1>
+                {errorMsg && <>{errorMsg}</>}
+                <form onSubmit={singUpFunc}
+                >
+                    <div className="flex items-left flex-col mb-5 gap-2 mx-8 ">
+                        <label htmlFor="username">Username</label>
+                        <input id="username" className="block p-1 rounded-md" 
+                        name="username" type="text" onChange={handleChange}/>
+                    </div>
+                    <div className="flex items-left flex-col mb-5 gap-2 mx-8 ">
+                        <label htmlFor="current-password">Password</label>
+                        <input id="current-password" className="block p-1 rounded-md"
+                        name="password" type="password" onChange={handleChange}/>
+                    </div>
+                    <div className="flex items-left flex-col mb-5 gap-2 mx-8 ">
+                        <label className="cursor-pointer bg-slate-100 
+                        rounded-md inline-block w-44 p-2">
+                            Add a profil picture
+                            <input type="file" id="imageInput" onChange={addingImg} 
+                            ref={selectImgBtn} accept="image/*" className="hidden"/>
+                        </label>
+                        <img id="imageContainer" ref={imgContainer} className="max-h-96 object-cover"></img>
+                    </div>
+                    {displayImg && <>
+                        <button type="button" className="inline-block w-auto bg-gray-200 
+                        text-red-600 ml-8 rounded-md" onClick={removePhoto}>
+                            Remove
+                        </button>
+                    </>} 
+                        
+                    
+                    <div className="mx-8 mb-5 mt-9">
+                        Already have an account? 
+                        <Link to={"/login"} className="inline-block text-orange-500 ml-2 
+                        underline-offset-1 text-xl">Log in</Link>
+                    </div>
+                    <button type="submit" className="mx-8 text-2xl bg-gray-200 mb-3 rounded-md">
+                        Sign Up
+                    </button>
+                </form>
+            </div>
+        </section>
+        
     )
    
 }
