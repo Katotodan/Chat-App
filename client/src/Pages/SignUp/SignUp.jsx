@@ -37,6 +37,9 @@ export const SingUp = () =>{
         .catch(err => {
             console.log(err); 
             setErrorMsg(err.response["data"])
+            setTimeout(() => {
+                setErrorMsg((prev) => null)
+            }, 2000);
         })
     }
     const handleChange = (e) =>{
@@ -74,7 +77,10 @@ export const SingUp = () =>{
             <div className=" md:w-2/4 md:h-3/4 border-2 border-black rounded-md form-container">
                 {navigateToHome && <Navigate to="/"/>}
                 <h1 className="text-center text-5xl font-sans my-8">Sign up</h1>
-                {errorMsg && <>{errorMsg}</>}
+                <div className="h-6 ml-8 mb-2">
+                    {errorMsg && <p className="text-red-600">{errorMsg}</p>}
+                </div>
+                
                 <form onSubmit={singUpFunc}
                 >
                     <div className="flex items-left flex-col mb-5 gap-2 mx-8 ">

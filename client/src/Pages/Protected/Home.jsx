@@ -65,7 +65,7 @@ export const Home = () =>{
                             message = {newMsg}
                             user = {user}
                         />
-                    ): (
+                    ): ( 
                         <>
                             <h2>Hey {user.username}! Welcome to U-message!!!</h2>
                             <h3>Select an user to start a conversation 😎😎😎</h3>

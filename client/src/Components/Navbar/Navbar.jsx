@@ -47,6 +47,6 @@ export const Navbar = ({user}) =>{
                     <button type="submit">Log out</button>
                 </form>
             </div>
-        </nav>
+        </nav> 
     )
 }

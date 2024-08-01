@@ -4,45 +4,8 @@ main{
     display: flex;
     position: relative;
 }
-.search-conversation{
-    width: 100%;
-    height: 3rem;
-    position: relative !important;
-}
-.search-conversation form{
-    display: flex;
-    align-items: center;
-    height: 3rem;
-    position: fixed;
-    left: 0;
-    background-color: #f0f0f0;
-    width: 25rem;
-}
-.search-conversation form input{
-    width: 85%;
-    height: 2rem;
-    border-radius: 5px 0 0 5px;
-    padding: 0.25rem 0.5rem;
-    font-size: larger;
-    border-right: none;
-}
-.search-conversation form input:focus{
-    outline: none;
-}
-.search-conversation form button{
-    width: 15%;
-    height: 2rem;
-    border-radius: 0 5px  5px 0 ;
-    font-size: larger;
-    padding-top: 0.25rem;
-    border-left: none;
-}
-.contacts{
-    width: 50%;
-    height: calc(100vh - 5rem);
-    overflow-x: hidden;
-    overflow-y: auto;
-}
+
+
 .message--container{
     width: 100%;
     
@@ -72,4 +35,4 @@ main{
     display: inline-block;
     width: 10%;
     height: 2.5rem;
-}
+} 

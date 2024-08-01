@@ -9,10 +9,13 @@ export const Login = () =>{
         currentUser,
         setCurrentUser
     } = useContext(CurrentUserContext)
+    
+    const [errorMsg, setErrorMsg] = useState(null)
       
     const [userInfo, setUserInfo] = useState({"username": "", "password": ""})
     const loginFunc = (e) =>{
         e.preventDefault()
+        console.log('Log in clicked');  
         axios.post("http://localhost:5000/login/password", userInfo, {
             withCredentials: true, // Send credentials (cookies)
             headers: {
@@ -22,9 +25,15 @@ export const Login = () =>{
             },
         })
         .then((res) => {
-            setCurrentUser(res.data)
+            console.log(res.data);
+            setCurrentUser(prev => res.data)
         })
-        .catch(err => console.log(err))
+        .catch((err) => {
+            setErrorMsg(err.response["data"])
+            setTimeout(() => {
+                setErrorMsg((prev) => null)
+            }, 2000);
+        })
     }
     const handleChange = (e) =>{
         setUserInfo({
@@ -39,6 +48,10 @@ export const Login = () =>{
             <div className=" md:w-2/4 md:h-3/4 border-2 border-black rounded-md form-container">
                 {currentUser && <Navigate to="/"/>}
                 <h1 className="text-center text-5xl font-sans my-8">Log in</h1>
+            
+                <div className="h-6 ml-8 mb-2">
+                    {errorMsg && <p className="text-red-600">{errorMsg}</p>}
+                </div>
                 <form onSubmit={loginFunc}
                 >
                     <div className="flex items-left flex-col mb-5 gap-2 mx-8 ">
@@ -64,6 +77,8 @@ export const Login = () =>{
             </div>
         </section>
         
-    )
+    )  
 }
+
+// Working on login page, figure it out why is not redirect for many time
 
