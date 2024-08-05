@@ -1,3 +1,14 @@
+.messages{
+    position: relative;
+}
+.messages > h2{
+    position: sticky;
+    background-color: aliceblue;
+    top: 0;
+    left: 0;
+    text-align: center;
+    padding: 0.25rem 0;
+}
 .msg-container{
     display: flex;
     margin-bottom: 1rem;
@@ -35,6 +46,11 @@
     cursor: pointer;
     padding: 0.25rem;
     height: 1rem;
+}
+
+form > textarea{
+    resize: none;
+    outline: 1px solid black;
 }
 
 

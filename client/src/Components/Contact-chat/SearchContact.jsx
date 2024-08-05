@@ -37,7 +37,7 @@ export const SearchContact = ({currentUserId, updateContact}) => {
   return (
     <div className="search-form-container">
         <form action="">
-            <input type="text" placeholder="Search by name" 
+            <input type="text" placeholder="Search by username" 
             value={searchUserValue} onChange={handleSearch}/>
         </form>
     </div>

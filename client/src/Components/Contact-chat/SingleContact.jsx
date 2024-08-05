@@ -22,13 +22,15 @@ export const SingleContact = ({element, displayMsg, currentUserId}) => {
             setLastMsgTime(`${hours}:${minutes}`)
         })
         .catch((err) => console.log(err))
-    })
+    }, [])
     
     // Is this user online?
   return (
     <div className="contact-chat" key={element._id} onClick = {handleClick}>
         <div className="photo">
-            <img src={element.image} alt="" className="img" />
+            {element.image ? <img src={element.image} alt="" className="img" /> :
+            <span className="img bg-slate-300">{element.username.slice(0,2).toUpperCase()}</span>
+            }
         </div>
         <div className="name-msg">
             <p className="name">{element.username}</p>

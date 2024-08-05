@@ -37,12 +37,12 @@ export const Msg = ({destination, destinationName, message, user}) =>{
         
     }, [message])
 
-    const textArea = useRef(null)
+    const [textareaValue, setTextareaValue] = useState("")
+
     let previousDate = []
 
-    const adjustRows = () => {
-        const lines = textArea.current.value.split("\n").length;
-        textArea.current.rows = lines;
+    const handleChange = (e) => {
+        setTextareaValue(e.target.value)
     }
 
 
@@ -90,22 +90,23 @@ export const Msg = ({destination, destinationName, message, user}) =>{
     const sendMsg = async (e) =>{
         e.preventDefault()
         axios.post(`http://localhost:5000/postMsg/${user.id}/${destination}`,
-        {"textMessage" : textArea.current.value}, {
+        {"textMessage" : textareaValue}, {
             withCredentials: true, // Send credentials (cookies)
             headers: {
             'Content-Type': 'application/json',
             },
         })
         .then( (res) => {
-            socket?.emit("messageSend", [textArea.current.value, destination])
+            socket?.emit("messageSend", [textareaValue, destination])
             setMsgList(prev => [...prev, 
                 {
-                    "message": textArea.current.value,
+                    "message": textareaValue,
                     "sender": user.id,
                     "receiver": destination,
                     "time": new Date()
                 }
-            ])  
+            ]) 
+            setTextareaValue("") 
         })
         .catch(err => console.log(err))   
     }
@@ -113,14 +114,15 @@ export const Msg = ({destination, destinationName, message, user}) =>{
     return( 
         <>
             <div className="messages" >
-                <h2>Chat with {destinationName}</h2>
+                <h2>Chat with <strong>{destinationName}</strong></h2>
                 {messages}
             </div>
             <form className="Search-bar" onSubmit={sendMsg}>
-                <textarea name="textMessage" id="" rows="1"  ref={textArea} onChange={adjustRows}></textarea>
+                <textarea name="textMessage" id="" value={textareaValue} autoFocus onChange={handleChange} rows={1}/>
                 <button type="submit" >Send</button>
             </form>
         </>
         
     )
-}
+} 
+// Working on textarea then make the home page responsive

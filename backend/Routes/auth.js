@@ -11,7 +11,7 @@ const router = express.Router();
 router.get('/login', function(req, res, next) {
   res.status(500).send('Log in fails, username or password incorrect!');
 });
-router.get('/', function(req, res, next) { 
+router.get('/', function(req, res, next) {   
   if(req.user){
     res.status(200).send(req.user)
   }else{

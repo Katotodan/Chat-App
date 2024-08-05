@@ -42,15 +42,11 @@ export const ContactChat = ({setDestination , setDestinationName, currentUser, c
             <div className="contacts-section">
                 <SearchContact updateContact = {updateContact} currentUserId= {currentUserId} />
                 <div className="contact_container">
-                    {contact}
-                    {contact}
-                    {contact}
-                    {contact}
-                    {contact}
-                    {contact}
-                    {contact}
-                    {contact}
-                    {contact}
+                    {contact.length > 0 ? <>{contact}</>:<>
+                        <span className="no-conversation">There were no conversations found!</span> 
+                    </>}
+                    
+                    
                 </div>
                 
             </div>

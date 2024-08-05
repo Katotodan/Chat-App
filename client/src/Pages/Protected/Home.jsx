@@ -66,14 +66,14 @@ export const Home = () =>{
                             user = {user}
                         />
                     ): ( 
-                        <>
-                            <h2>Hey {user.username}! Welcome to U-message!!!</h2>
+                        <div className="welcoming-msg">
+                            <h2 >Hey <strong>{user.username}</strong> ! Welcome to U-message!!!</h2>
                             <h3>Select an user to start a conversation 😎😎😎</h3>
-                        </>
+                        </div>
                     )}
                     
                 </div>
-            </main>
+            </main> 
         </div>
         
     )

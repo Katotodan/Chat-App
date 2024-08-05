@@ -9,6 +9,7 @@ export const Login = () =>{
         currentUser,
         setCurrentUser
     } = useContext(CurrentUserContext)
+    const [redirectUser, setRedictUser] = useState(false)
     
     const [errorMsg, setErrorMsg] = useState(null)
       
@@ -25,8 +26,8 @@ export const Login = () =>{
             },
         })
         .then((res) => {
-            console.log(res.data);
-            setCurrentUser(prev => res.data)
+            setCurrentUser({...res.data})
+            setRedictUser(true)
         })
         .catch((err) => {
             setErrorMsg(err.response["data"])
@@ -35,7 +36,7 @@ export const Login = () =>{
             }, 2000);
         })
     }
-    const handleChange = (e) =>{
+    const handleChange = (e) =>{ 
         setUserInfo({
             ...userInfo,
             [e.target.name] : e.target.value,
@@ -46,7 +47,7 @@ export const Login = () =>{
     return(
         <section className="h-screen bg-slate-300 flex items-center justify-center">
             <div className=" md:w-2/4 md:h-3/4 border-2 border-black rounded-md form-container">
-                {currentUser && <Navigate to="/"/>}
+                {redirectUser && <Navigate to="/"/>}
                 <h1 className="text-center text-5xl font-sans my-8">Log in</h1>
             
                 <div className="h-6 ml-8 mb-2">

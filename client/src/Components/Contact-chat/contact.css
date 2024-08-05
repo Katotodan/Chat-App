@@ -10,15 +10,22 @@
     left: 0;
 }
 .search-form-container > form > input{
-    width: 100%;
+    display: block;
+    width: 98%;
     height: 2.5rem;
     padding: 0.25rem 0.5rem;
     font-size: 1.3rem;
+    border-radius: 10px;
+    outline: 1px solid black;
+    margin: 0 auto;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem ;
+    
 }
 
-form input:focus{
+/* form input:focus{
     outline: none;
-}
+} */
 .contacts-section{
     width: 50%;
     height: calc(100vh - 5rem);
@@ -52,5 +59,11 @@ form input:focus{
 .name-msg > *{
     padding: 0;
     margin: 0;
+}
+.no-conversation{
+    display: block;
+    text-align: center !important;
+    margin-top: 1.5rem;
+    font-size: 1.2rem;
 }
 
