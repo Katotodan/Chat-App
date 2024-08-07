@@ -1,8 +1,9 @@
-import React,{useRef, useContext, useState, useEffect} from "react";
+import React,{useState, useEffect} from "react";
 import "./Message.css"
 import axios from "axios";
-import { socket } from "../../socket";
 import { SingleMsg } from "./SingleMsg";
+import { Textarea } from "./Textarea";
+import { socket } from "../../socket";
 
 
 export const Msg = ({destination, destinationName, message, user}) =>{
@@ -37,13 +38,10 @@ export const Msg = ({destination, destinationName, message, user}) =>{
         
     }, [message])
 
-    const [textareaValue, setTextareaValue] = useState("")
-
+    
     let previousDate = []
 
-    const handleChange = (e) => {
-        setTextareaValue(e.target.value)
-    }
+    
 
 
 
@@ -87,42 +85,41 @@ export const Msg = ({destination, destinationName, message, user}) =>{
             
         )
     })
-    const sendMsg = async (e) =>{
-        e.preventDefault()
+    const addToMessage = (e)=>{
         axios.post(`http://localhost:5000/postMsg/${user.id}/${destination}`,
-        {"textMessage" : textareaValue}, {
-            withCredentials: true, // Send credentials (cookies)
-            headers: {
-            'Content-Type': 'application/json',
-            },
-        })
-        .then( (res) => {
-            socket?.emit("messageSend", [textareaValue, destination])
-            setMsgList(prev => [...prev, 
-                {
-                    "message": textareaValue,
-                    "sender": user.id,
-                    "receiver": destination,
-                    "time": new Date()
-                }
-            ]) 
-            setTextareaValue("") 
-        })
-        .catch(err => console.log(err))   
+            {"textMessage" : e}, {
+                withCredentials: true, // Send credentials (cookies)
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            })
+            .then( (res) => {
+                socket?.emit("messageSend", [e, destination])
+                setMsgList(prev => [...prev, 
+                    {
+                        "message": e,
+                        "sender": user.id,
+                        "receiver": destination,
+                        "time": new Date()
+                    }
+                ])  
+            })
+            .catch(err => console.log(err))
+         
     }
+    
 
     return( 
-        <>
+        <div className="allMsg-container">
             <div className="messages" >
                 <h2>Chat with <strong>{destinationName}</strong></h2>
                 {messages}
+                
             </div>
-            <form className="Search-bar" onSubmit={sendMsg}>
-                <textarea name="textMessage" id="" value={textareaValue} autoFocus onChange={handleChange} rows={1}/>
-                <button type="submit" >Send</button>
-            </form>
-        </>
+            <Textarea addMessage={addToMessage} destination={destination}/>
+            
+        </div>
         
     )
-} 
-// Working on textarea then make the home page responsive
+}  
+// Working on textarea then make the home page responsive  

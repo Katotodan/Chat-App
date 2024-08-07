@@ -30,6 +30,8 @@ export const Login = () =>{
             setRedictUser(true)
         })
         .catch((err) => {
+            console.log(err);
+            
             setErrorMsg(err.response["data"])
             setTimeout(() => {
                 setErrorMsg((prev) => null)

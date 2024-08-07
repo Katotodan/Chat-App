@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
   if(req.user){
     res.status(200).send(req.user)
   }else{
-    res.status(400).send('User not defined')
+    res.status(400).json('User not defined')
   }
 });
 

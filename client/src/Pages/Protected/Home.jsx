@@ -49,14 +49,15 @@ export const Home = () =>{
     const toUser_name = (name) =>{
         setDestinationName(name)
     }
-    console.log(user);
+    
     
     return(        
         <div>
             <Navbar user={user}/>
             <main>
+                
                 <ContactChat setDestination = {toUser} 
-                setDestinationName ={toUser_name} currentUser ={user.username} currentUserId={user.id}
+                setDestinationName ={toUser_name} currentUserId={user.id}
                 />
                 <div className="message--container">
                     {destination ? (
@@ -65,7 +66,7 @@ export const Home = () =>{
                             message = {newMsg}
                             user = {user}
                         />
-                    ): ( 
+                    ): (  
                         <div className="welcoming-msg">
                             <h2 >Hey <strong>{user.username}</strong> ! Welcome to U-message!!!</h2>
                             <h3>Select an user to start a conversation 😎😎😎</h3>

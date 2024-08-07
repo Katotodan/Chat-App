@@ -11,32 +11,7 @@ main{
     
 }
 
-.messages{
-    width: 100%;
-    height: calc(100vh - 10rem);
-    overflow-x: hidden;
-    overflow-y: auto;
-}
-
-.Search-bar{
-    height: 5rem;
-    display: flex;
-    gap: 1rem;
-    align-items: flex-end;
-    justify-content: center;
-    padding-bottom: 0.5rem;
-}
-.Search-bar textarea{
-    width: 100%;
-    padding: 0.25rem 0.5rem;
-    min-height: 2.5rem;
-    font-size: 1.2rem;
-}
-.Search-bar button{
-    display: inline-block;
-    width: 10%;
-    height: 2.5rem;
-} 
+ 
 /* Welcoming message style */
 .welcoming-msg{
     display: flex;

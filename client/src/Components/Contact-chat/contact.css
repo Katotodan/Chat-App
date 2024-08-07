@@ -2,7 +2,12 @@
 .contacts-section{
     background-color: #f0f0f0;
     position: relative;
+    width: 50%;
+    height: calc(100vh - 5rem);
+    overflow-x: hidden;
+    overflow-y: auto;
 }
+
 .search-form-container{
     width: 100%;
     position: sticky;
@@ -23,20 +28,6 @@
     
 }
 
-/* form input:focus{
-    outline: none;
-} */
-.contacts-section{
-    width: 50%;
-    height: calc(100vh - 5rem);
-    overflow-x: hidden;
-    overflow-y: auto;
-}
-/* Single chat style */
-.contact_container{
-    
-    /* padding: 0.5rem 0; */
-}
 .contact-chat{
     display: flex;
     align-items: center;
@@ -67,3 +58,38 @@
     font-size: 1.2rem;
 }
 
+/* Responsiveness */
+.menu-displayer{
+    display: none;
+
+}
+@media screen and (max-width: 992px)  {
+    .menu-displayer{
+        display: block;
+        font-size: 2.5rem;
+        margin-left: 0.5rem;
+        background-color: transparent;
+        margin-top: -1.2rem;
+        cursor: pointer;
+    }
+    .contacts-section{
+        width: auto ;
+        position: absolute ;
+        top: 0;
+        left: 0;
+        background-color: transparent;
+        
+    }
+    .add-color{
+        background-color: #f0f0f0;
+    }
+    .menu{
+        display: none;
+        width: 100vw;
+        transition: display 0.5s ease;
+    } 
+    .nonActive{
+        display: block;
+        transition: display 0.5s ease;
+    }
+}

@@ -4,8 +4,11 @@ import axios from "axios";
 import { SingleContact } from "./SingleContact";
 import { SearchContact } from "./SearchContact";
 
-export const ContactChat = ({setDestination , setDestinationName, currentUser, currentUserId})=>{
+export const ContactChat = ({setDestination , setDestinationName, currentUserId})=>{
     const [contacts, setContact] = useState([])
+    const menu = useRef(null)
+    const menuContainer = useRef(null)
+    const [isMenuIcon, setIsMenuIcon]  = useState(true)
     
 
     useEffect( () => {
@@ -22,10 +25,13 @@ export const ContactChat = ({setDestination , setDestinationName, currentUser, c
         .catch((err) => console.log(err))
     }, []) 
     
-
+    const displayMenu = (e)=>{ isMenuIcon ? setIsMenuIcon(false) : setIsMenuIcon(true)}
     const displayMsg = (element) =>{
         setDestination(element._id)
         setDestinationName(element.username)
+        // Removing the menu in table view point
+        displayMenu()
+        
     }
     const updateContact =(e)=>{
         setContact([...e])
@@ -36,10 +42,15 @@ export const ContactChat = ({setDestination , setDestinationName, currentUser, c
         displayMsg={displayMsg} currentUserId ={currentUserId}/>
     })
 
+    
+
     return(
         
-        <>
-            <div className="contacts-section">
+        <div className={ isMenuIcon ? "contacts-section " : "contacts-section add-color"} ref={menuContainer}>
+            <div className="menu-displayer" onClick={displayMenu} >
+                {isMenuIcon ? <span>&#8801;</span>: <span className="text-red-600">&#10006;</span>}
+            </div>
+            <div className={isMenuIcon ? "menu active" : "menu nonActive"} ref={menu}>
                 <SearchContact updateContact = {updateContact} currentUserId= {currentUserId} />
                 <div className="contact_container">
                     {contact.length > 0 ? <>{contact}</>:<>
@@ -48,10 +59,11 @@ export const ContactChat = ({setDestination , setDestinationName, currentUser, c
                     
                     
                 </div>
-                
             </div>
-        </>
+            
+            
+        </div>
     )
 }
 
-//then online date and last message 
+//Working on responsive nav bar from 600px

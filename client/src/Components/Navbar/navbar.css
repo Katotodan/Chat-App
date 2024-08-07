@@ -42,3 +42,9 @@ form button{
     background-color: rgb(107, 107, 212);
 }
 
+@media screen and (max-width: 992px)  {
+    nav{
+        padding: 0 5%;
+    }
+}
+

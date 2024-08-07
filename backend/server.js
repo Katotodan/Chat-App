@@ -42,7 +42,7 @@ app.use(session({
 app.use(passport.authenticate('session'));
 app.use("/", authRouter)
 app.use("/", messageRouter)
-
+  
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
