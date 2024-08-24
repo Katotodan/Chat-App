@@ -4,16 +4,14 @@
     height: calc(100vh - 5rem);
     width: auto;
     z-index: -5;
-
 }
 .messages{
-    position: relative;
     background-color: blanchedalmond;
     width: 100%;
-    height: 100%;
-    overflow-x: hidden;
+    height: calc(100% - 3.5rem);
     overflow-y: auto;
     z-index: -55;
+    flex-shrink: 0;
 }
 
 .messages > h2{
@@ -26,40 +24,11 @@
 }
 
 
-.Search-bar{
-    min-height: 4rem;
-    max-height: auto;
-    display: flex;
-    gap: 1rem;
-    align-items: flex-end;
-    justify-content: center;
-    padding-bottom: 0.5rem;
-    margin-top: 0.5rem;
-}
-
-.Search-bar textarea{
-    width: 100%;
-    padding: 0.25rem 0.5rem;
-    min-height: 2.5rem;
-    font-size: 1.2rem;
-}
-.Search-bar button{
-    display: inline-block;
-    width: 10%;
-    height: 2.5rem;
-}
-form > textarea{
-    resize: none;
-    outline: 1px solid black;
-    margin-left: 0.5rem;
-    padding: 0 !important;
-}
 /* Single message style start here */
 .msg-container{
     display: flex;
     margin-bottom: 1rem;
     padding: 0 2rem;
-    
 
 }
 .msg{
@@ -95,7 +64,4 @@ form > textarea{
 }
 /* Single msg style end */
 
-/* textarea style */
-
-
-
+/* My messages class in not scrolling I should start by fixing it */

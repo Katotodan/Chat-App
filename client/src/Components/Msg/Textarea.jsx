@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react'
-import "./Message.css"
+import "./textarea.css"
+
 export const Textarea = ({addMessage, destination}) => {
     const [textareaValue, setTextareaValue] = useState("")
     const textarea = useRef(null)
@@ -32,4 +33,4 @@ export const Textarea = ({addMessage, destination}) => {
     </form>
   )
 }
-
+ 

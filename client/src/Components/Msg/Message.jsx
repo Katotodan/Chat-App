@@ -120,6 +120,6 @@ export const Msg = ({destination, destinationName, message, user}) =>{
             
         </div>
         
-    )
+    ) 
 }  
 // Working on textarea then make the home page responsive  

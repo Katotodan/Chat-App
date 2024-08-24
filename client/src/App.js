@@ -3,7 +3,6 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { useEffect, useState, useContext, createContext } from "react";
-import './App.css';
 import { SingUp } from './Pages/SignUp/SignUp';
 import { Login } from './Pages/Login/Login';
 import { Home } from "./Pages/Protected/Home";

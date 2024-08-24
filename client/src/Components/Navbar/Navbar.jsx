@@ -7,6 +7,7 @@ import logo from "../../asserts/logo.png"
 
 export const Navbar = ({user}) =>{
     const [redirectUser, setRedirectUser] = useState(false)
+    const [displayLogoutBtn, setDisplayLogoutBtn] = useState(false)
     const logoutFunc = (e) =>{
         e.preventDefault() 
         axios.post("http://localhost:5000/logout", user
@@ -30,7 +31,9 @@ export const Navbar = ({user}) =>{
     const buffer = new Uint8Array([user.image]); 
     const blob =   new Blob([buffer], { type: 'image/jpeg' }); 
     const url = URL.createObjectURL(blob)
-    console.log(url)
+    const displayLogOutbtn = () =>{
+        displayLogoutBtn ? setDisplayLogoutBtn(false): setDisplayLogoutBtn(true)
+    }
 
     return (
         <nav>
@@ -39,17 +42,17 @@ export const Navbar = ({user}) =>{
                 <img src={logo} alt="" className="logo"/>
             </div>
             
-            <div className="user">
+            <div className={displayLogoutBtn ? "user user-responsive" : "user"}>
                 <div>
-                    <p>{user["username"]}</p>
+                    <p className={displayLogoutBtn ? "username-responsive" : "username"}>{user["username"]}</p>
                     {
-                        user.image ? <img src={user.image} alt="" className="userImage" /> :
-                        <span className="userImageText bg-slate-300">{user["username"].slice(0,2).toUpperCase()}</span>
+                        user.image ? <img src={user.image} alt="" className="userImage" onClick={displayLogOutbtn}/> :
+                        <span className="userImageText bg-slate-300"onClick={displayLogOutbtn}>{user["username"].slice(0,2).toUpperCase()}</span>
                     }
                     
                 </div>
                 <form onSubmit={logoutFunc}>
-                    <button type="submit">Log out</button>
+                    <button type="submit">Log out</button> 
                 </form>
             </div>
         </nav> 

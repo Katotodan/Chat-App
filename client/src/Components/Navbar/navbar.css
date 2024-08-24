@@ -47,4 +47,44 @@ form button{
         padding: 0 5%;
     }
 }
+@media screen and (max-width: 600px)  {
+    nav{
+        align-items: normal;
+        position: relative;
+        height: 4rem;
+    }
+    .logo, .userImage, .userImageText{
+        height: 3rem !important;
+        width: 3rem !important;
+    }
+    .username{
+        display: none;
+        transition: all 2s;
+    }
+    .user > form{
+        display:  none;
+    }
+    .user-responsive > form{
+        display: block;
+        
+    }
+    .user-responsive{
+        display: block;
+        position: absolute;
+        flex-direction: column; 
+        height: auto; 
+        background-color: #eee;
+        top: 10%;
+        right: 0;
+        padding: 0 5% 1rem 1rem;
+        z-index: 999999;
+        gap: .5rem;
+        transition: all 2s;
+    }
+    .user-responsive > div{
+        flex-direction: column-reverse;
+        gap: .5rem;
+        transition: all 2s;
+    }
+}
 
