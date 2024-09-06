@@ -1,11 +1,12 @@
 
 .contacts-section{
-    background-color: #f0f0f0;
-    position: relative;
-    width: 50%;
+    background-color: #f0f0f0 !important;
+    /* position: relative; */
+    /* width: 100%; */
     height: calc(100vh - 5rem);
     overflow-x: hidden;
     overflow-y: auto;
+    z-index: 2;
 }
 
 .search-form-container{
@@ -64,28 +65,26 @@
 
 }
 @media screen and (max-width: 992px)  {
+    .contacts-section{
+        position: relative; 
+        width: 100%;
+        padding-top: 3rem;
+    }
+    
     .menu-displayer{
         display: block;
         font-size: 2.5rem;
         margin-left: 0.5rem;
         background-color: transparent;
-        margin-top: -1.2rem;
         cursor: pointer;
+        position: absolute;
+        top: -0.75rem;
+        left: 0.5rem;
+        z-index: 44;
     }
-    .contacts-section{
-        width: auto ;
-        position: absolute ;
-        top: 0;
-        left: 0;
-        background-color: transparent;
-        
-    }
-    .add-color{
-        background-color: #f0f0f0;
-    }
+    
     .menu{
         display: none;
-        width: 70vw;
         transition: display 0.5s ease;
     } 
     .nonActive{
@@ -95,7 +94,7 @@
 }
 
 @media screen and (max-width: 600px)  {
-    .menu{
+    .sm-device-view{
         width: 100vw;
-    } 
+    }
 }

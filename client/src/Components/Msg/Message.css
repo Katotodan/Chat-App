@@ -1,14 +1,17 @@
 .allMsg-container{
-    display: flex;
-    flex-direction: column;
+    /* display: flex;
+    flex-direction: column; */
     height: calc(100vh - 5rem);
+    flex: 2;
+    /* height: auto; */
     width: auto;
     z-index: -5;
+
 }
 .messages{
     background-color: blanchedalmond;
     width: 100%;
-    height: calc(100% - 3.5rem);
+    height: calc(100vh - 8.5rem);
     overflow-y: auto;
     z-index: -55;
     flex-shrink: 0;
@@ -21,6 +24,7 @@
     left: 0;
     text-align: center;
     padding: 0.25rem 0;
+    z-index: 1;
 }
 
 

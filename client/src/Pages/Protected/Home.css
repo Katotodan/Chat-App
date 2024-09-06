@@ -5,11 +5,13 @@ main{
     position: relative;
 }
 
-
-.message--container{
-    width: 100%;
-    
+.contact--container{
+    flex: 1;
 }
+.message--container{
+    flex: 3;
+    
+} 
 
  
 /* Welcoming message style */
@@ -26,6 +28,11 @@ main{
     margin-top: 6rem;
 
 }
-.welcoming-msg h3{
-    
+@media screen and (max-width: 992px) {
+    .contact--container{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: auto;
+    }
 }

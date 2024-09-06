@@ -45,11 +45,12 @@ export const ContactChat = ({setDestination , setDestinationName, currentUserId}
     
 
     return(
-        
-        <div className={ isMenuIcon ? "contacts-section " : "contacts-section add-color"} ref={menuContainer}>
-            <div className="menu-displayer" onClick={displayMenu} >
+        <>
+        <div className="menu-displayer" onClick={displayMenu} >
                 {isMenuIcon ? <span>&#8801;</span>: <span className="text-red-600">&#10006;</span>}
-            </div>
+        </div>
+        <div className={ isMenuIcon ? "contacts-section " : "contacts-section sm-device-view"} ref={menuContainer}>
+            
             <div className={isMenuIcon ? "menu active" : "menu nonActive"} ref={menu}>
                 <SearchContact updateContact = {updateContact} currentUserId= {currentUserId} />
                 <div className="contact_container">
@@ -57,12 +58,11 @@ export const ContactChat = ({setDestination , setDestinationName, currentUserId}
                         <span className="no-conversation">There were no conversations found!</span> 
                     </>}
                     
-                    
                 </div>
             </div>
             
-            
         </div>
+        </>
     )
 }
 
