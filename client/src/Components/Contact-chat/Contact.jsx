@@ -41,7 +41,6 @@ export const ContactChat = ({setDestination , setDestinationName, currentUserId}
         return <SingleContact element={element} key={element._id} 
         displayMsg={displayMsg} currentUserId ={currentUserId}/>
     })
-
     
 
     return(
