@@ -14,10 +14,4 @@
         height: 100%;
         border: none;
     }
-    .form-container h1{
-        font-size: 2rem;
-    }
-    .form-container label{
-        font-size: 1.5rem;
-    }
 }

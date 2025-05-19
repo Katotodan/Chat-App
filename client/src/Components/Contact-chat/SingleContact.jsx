@@ -7,7 +7,7 @@ export const SingleContact = ({element, displayMsg, currentUserId}) => {
     const handleClick = () => {displayMsg(element)}
     // Get last message
     useEffect(()=>{
-        axios.get(`http://localhost:5000/singleContact/lastmessage/${element._id}/${currentUserId}`,{
+        axios.get(process.env.REACT_APP_API_URL + `/singleContact/lastmessage/${element._id}/${currentUserId}`,{
             withCredentials: true, // Send credentials (cookies)
             headers: {
             'Content-Type': 'application/json',
@@ -40,6 +40,6 @@ export const SingleContact = ({element, displayMsg, currentUserId}) => {
             {lastMsgTime}
         </div>
     </div>
-  )
+  ) 
 }
 

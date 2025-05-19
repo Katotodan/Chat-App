@@ -10,7 +10,7 @@ export const Navbar = ({user}) =>{
     const [displayLogoutBtn, setDisplayLogoutBtn] = useState(false)
     const logoutFunc = (e) =>{
         e.preventDefault() 
-        axios.post("http://localhost:5000/logout", user
+        axios.post(process.env.REACT_APP_API_URL + "/logout", user
         , {
           withCredentials: true, // Send credentials (cookies)
           headers: {

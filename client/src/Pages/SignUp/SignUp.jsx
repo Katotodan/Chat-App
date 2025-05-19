@@ -23,7 +23,7 @@ export const SingUp = () =>{
             "image": image
         }        
 
-        axios.post("http://localhost:5000/signup", userData, {
+        axios.post(process.env.REACT_APP_API_URL + "/signup", userData, {
             withCredentials: true, // Send credentials (cookies)
             headers: {
               'Content-Type': 'application/json',
@@ -74,9 +74,12 @@ export const SingUp = () =>{
     
     return(
         <section className="min-h-screen bg-slate-300 flex items-center justify-center pb-4">
-            <div className=" md:w-2/4 md:h-3/4 border-2 border-black rounded-md form-container">
+            <h1 className="absolute top-4 left-0 text-center w-full text-3xl sm:text-4xl">
+                Welcome to U-message
+            </h1>
+            <div className=" md:w-2/4 md:h-3/4 border-2 border-black rounded-md form-container mt-10">
                 {navigateToHome && <Navigate to="/"/>}
-                <h1 className="text-center text-5xl font-sans my-8">Sign up</h1>
+                <h1 className="text-center sm:text-3xl text-2xl font-sans my-6">Sign up</h1>
                 <div className="h-6 ml-8 mb-2">
                     {errorMsg && <p className="text-red-600">{errorMsg}</p>}
                 </div>
@@ -84,14 +87,14 @@ export const SingUp = () =>{
                 <form onSubmit={singUpFunc}
                 >
                     <div className="flex items-left flex-col mb-5 gap-2 mx-8 ">
-                        <label htmlFor="username">Username</label>
+                        <label htmlFor="username" className="text-xl sm:text-2xl">Username</label>
                         <input id="username" className="block p-1 rounded-md" 
-                        name="username" type="text" onChange={handleChange}/>
+                        name="username" type="text" onChange={handleChange} required/>
                     </div>
                     <div className="flex items-left flex-col mb-5 gap-2 mx-8 ">
-                        <label htmlFor="current-password">Password</label>
+                        <label htmlFor="current-password" className="text-xl sm:text-2xl">Password</label>
                         <input id="current-password" className="block p-1 rounded-md"
-                        name="password" type="password" onChange={handleChange}/>
+                        name="password" type="password" onChange={handleChange} required/>
                     </div>
                     <div className="flex items-left flex-col mb-5 gap-2 mx-8 ">
                         <label className="cursor-pointer bg-slate-100 
@@ -115,7 +118,7 @@ export const SingUp = () =>{
                         <Link to={"/login"} className="inline-block text-orange-500 ml-2 
                         underline-offset-1 text-xl">Log in</Link>
                     </div>
-                    <button type="submit" className="mx-8 text-2xl bg-gray-200 mb-3 rounded-md">
+                    <button type="submit" className="mx-8 ms:text-2xl text-xl bg-gray-200 mb-3 rounded-md">
                         Sign Up
                     </button>
                 </form>
