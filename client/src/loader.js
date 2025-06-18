@@ -4,7 +4,7 @@ import { redirect } from 'react-router-dom';
 export const loaderFunction = () =>{
     //send request to '/',
     return (
-        axios.get("http://localhost:5000/",{
+        axios.get(process.env.REACT_APP_API_URL,{
         withCredentials: true, // Send credentials (cookies)
         headers: {
             'Content-Type': 'application/json',
@@ -13,7 +13,6 @@ export const loaderFunction = () =>{
         if(res.data === "Login"){
             return redirect('/login');
         }
-        console.log(res.data);
         return res.data
         })
         .catch(err => {
@@ -27,7 +26,7 @@ export const loaderFunction = () =>{
 export const loaderFunctionOnLogin = () =>{
     //send request to '/',
     return (
-        axios.get("http://localhost:5000/",{
+        axios.get(process.env.REACT_APP_API_URL,{
         withCredentials: true, // Send credentials (cookies)
         headers: {
             'Content-Type': 'application/json',

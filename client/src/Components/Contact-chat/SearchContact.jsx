@@ -11,9 +11,9 @@ export const SearchContact = ({currentUserId, updateContact}) => {
           } else {
             let uri
             if(searchUserValue){
-                uri = `http://localhost:5000/contact/${searchUserValue}`
+                uri =  `${process.env.REACT_APP_API_URL}/contact/${searchUserValue}`
             }else{
-                uri = `http://localhost:5000/conversationList/${currentUserId}`
+                uri = `h${process.env.REACT_APP_API_URL}/conversationList/${currentUserId}`
             }
 
             axios.get(uri,{

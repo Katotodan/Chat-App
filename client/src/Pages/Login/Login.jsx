@@ -9,14 +9,13 @@ export const Login = () =>{
         currentUser,
         setCurrentUser
     } = useContext(CurrentUserContext)
-    const [redirectUser, setRedictUser] = useState(false)
+    const [redirectUser, setRedirectUser] = useState(false)
     
     const [errorMsg, setErrorMsg] = useState(null)
       
     const [userInfo, setUserInfo] = useState({"username": "", "password": ""})
     const loginFunc = (e) =>{
         e.preventDefault()
-        console.log('Log in clicked');  
         axios.post(process.env.REACT_APP_API_URL +"/login/password", userInfo, {
             withCredentials: true, // Send credentials (cookies)
             headers: {
@@ -27,12 +26,12 @@ export const Login = () =>{
         })
         .then((res) => {
             setCurrentUser({...res.data})
-            setRedictUser(true)
+            setRedirectUser(true)
         })
         .catch((err) => {
             console.log(err);
             
-            setErrorMsg(err.response["data"])
+            setErrorMsg(err?.response?.data || "Login failed")
             setTimeout(() => {
                 setErrorMsg((prev) => null)
             }, 2000);
@@ -48,11 +47,12 @@ export const Login = () =>{
     
     return(
         <section className="h-screen bg-slate-300 flex items-center justify-center">
+            {redirectUser && <Navigate to="/" replace />}
             <h1 className="absolute top-4 left-0 text-center w-full text-3xl sm:text-4xl">
                 Welcome to U-message
             </h1>
             <div className=" md:w-2/4 md:h-3/4 border-2 border-black rounded-md form-container">
-                {redirectUser && <Navigate to="/"/>}
+                
                 <h1 className="text-center sm:text-3xl text-2xl font-sans my-5">Log in</h1>
             
                 <div className="h-6 ml-8 mb-2">

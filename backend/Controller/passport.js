@@ -13,7 +13,7 @@ passport.use(new LocalStrategy(async function verify(username, password, cb) {
         return cb(null, false, { message: 'Incorrect username or password.' });
     } 
     
-  }));
+}));
 
 passport.serializeUser(function(user, cb) {
     process.nextTick(function() {

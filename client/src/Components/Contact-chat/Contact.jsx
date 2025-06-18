@@ -12,7 +12,7 @@ export const ContactChat = ({setDestination , setDestinationName, currentUserId}
     
 
     useEffect( () => {
-        axios.get(`http://localhost:5000/conversationList/${currentUserId}`,{
+        axios.get(`${process.env.REACT_APP_API_URL}/conversationList/${currentUserId}`,{
             withCredentials: true, // Send credentials (cookies)
             headers: {
             'Content-Type': 'application/json',

@@ -4,14 +4,10 @@ const passport = require("../Controller/passport.js")
 
 const router = express.Router();
 
-
-
-
-
 router.get('/login', function(req, res, next) {
   res.status(500).send('Log in fails, username or password incorrect!');
 });
-router.get('/', function(req, res, next) {   
+router.get('/', function(req, res) {   
   if(req.user){
     res.status(200).send(req.user)
   }else{
@@ -21,7 +17,8 @@ router.get('/', function(req, res, next) {
 
 router.post('/login/password', passport.authenticate('local', {
   successRedirect: '/',
-  failureRedirect: '/login'
+  failureRedirect: '/login',
+  failureMessage: true
 }));
 
 // Sing up router
@@ -51,7 +48,7 @@ router.post('/signup', async (req, res, next) => {
 
 router.post('/logout', function(req, res, next) {
   req.logout(function(err) {
-    if (err) { return next(err); } 
+    if (err) {res.status(500).send("Log out fail")}
     res.status(200).send("Log out success!");
   });
 });

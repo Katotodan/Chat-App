@@ -10,23 +10,20 @@ export const Navbar = ({user}) =>{
     const [displayLogoutBtn, setDisplayLogoutBtn] = useState(false)
     const logoutFunc = (e) =>{
         e.preventDefault() 
-        axios.post(process.env.REACT_APP_API_URL + "/logout", user
-        , {
-          withCredentials: true, // Send credentials (cookies)
-          headers: {
-            'Content-Type': 'application/json',
-          //   Authorization: `Bearer ${sessionToken}`, // Include the session token in the Authorization header
-          },
-        }
-        )
+        axios.post(process.env.REACT_APP_API_URL +"/logout", user, {
+            withCredentials: true, // Send credentials (cookies)
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
         .then((res) => {
-            //  Redirect to login
+            console.log("axios call") 
             socket.disconnect()
             setRedirectUser(true)
-
         })
-        .catch(err => console.log(err)) 
-    
+        .catch((err) => {
+            console.log(err);
+        })
     }
     const buffer = new Uint8Array([user.image]); 
     const blob =   new Blob([buffer], { type: 'image/jpeg' }); 
