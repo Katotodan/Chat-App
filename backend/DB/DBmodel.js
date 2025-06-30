@@ -1,30 +1,27 @@
 const mongoose = require('mongoose')
 
-const schema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     username: {
         type: String,
-        require: true
+        required: true
     },
     password: {
         type: String,
-        require: true,
+        required: true,
     },
     image: {
         type: String,
-        require: false
     }
 })
-
-const UserModel = mongoose.model("users", schema)
 
 const msgSchema = new mongoose.Schema({
     sender : {
         type: String,
-        require: true
+        required: true
     },
     receiver: {
         type: String,
-        require: true
+        required: true
     },
     message: {
         type: String
@@ -35,6 +32,7 @@ const msgSchema = new mongoose.Schema({
     }
 })
 
+const UserModel = mongoose.model("users", userSchema)
 const MsgModel = mongoose.model('Messages', msgSchema)
 
 module.exports = {UserModel, MsgModel}
