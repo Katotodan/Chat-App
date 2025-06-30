@@ -2,7 +2,6 @@ import React, {useState, useEffect, useContext} from "react";
 import axios from "axios";
 import { CurrentUserContext } from "../../App";
 import { Navigate, Link } from "react-router-dom";
-import "./login.css"
 
 export const Login = () =>{
     const {
@@ -45,13 +44,16 @@ export const Login = () =>{
         })
     }
     
-    return(
-        <section className="h-screen bg-slate-300 flex items-center justify-center">
+    return( 
+        <section className="min-h-dvh  bg-slate-300 flex items-center justify-center flex-col
+        landscape-sm:overflow-y-scroll landscape-sm:h-auto gap-3 md:gap-5 lg:gap-9" >
             {redirectUser && <Navigate to="/" replace />}
-            <h1 className="absolute top-4 left-0 text-center w-full text-3xl sm:text-4xl">
+            <h1 className="text-center w-full text-3xl sm:text-4xl">
                 Welcome to U-message
             </h1>
-            <div className=" md:w-2/4 md:h-3/4 border-2 border-black rounded-md form-container">
+            <div className="w-full h-[90%] md:w-[75%] md:h-[80%] ls:w-2/4 ls:h-3/4 border-2 
+            border-transparent md:border-black rounded-md form-container pb-2
+            landscape-sm:h-auto  landscape-sm:mb-2 " >
                 
                 <h1 className="text-center sm:text-3xl text-2xl font-sans my-5">Log in</h1>
             
