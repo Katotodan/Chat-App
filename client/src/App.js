@@ -3,8 +3,8 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { useEffect, useState, useContext, createContext } from "react";
-import { SingUp } from './Pages/SignUp/SignUp';
-import { Login } from './Pages/Login/Login';
+import { SingUp } from './Pages/SignUp';
+import { Login } from './Pages/Login';
 import { Home } from "./Pages/Protected/Home";
 import { loaderFunction, loaderFunctionOnLogin } from "./loader";
 

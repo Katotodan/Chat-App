@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from "react";
 import axios from "axios";
-import { CurrentUserContext } from "../../App";
+import { CurrentUserContext } from "../App";
 import { Navigate, Link } from "react-router-dom";
 
 export const Login = () =>{
