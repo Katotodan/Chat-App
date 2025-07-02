@@ -39,7 +39,7 @@ export const ContactChat = ({setDestination , setDestinationName, currentUserId}
 
     const contact = contacts.map((el, index) =>{
         return <SingleContact image = {el.image} lastMessage={el.lastMessage} time={el.time} 
-        contactName={el.username} key={el._id} currentUserId ={el.id} displayMsg= {displayMsg}/>
+        contactName={el.username} key={el._id} currentUserId ={el._id} displayMsg= {displayMsg}/>
     })
     
 

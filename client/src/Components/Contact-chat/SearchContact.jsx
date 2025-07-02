@@ -5,17 +5,7 @@ export const SearchContact = ({currentUserId, updateContact}) => {
     const [searchUserValue, setSearchUserValue] = useState("")
     const isInitialRender = useRef(true)
     useEffect(()=>{
-        if (isInitialRender.current) {
-            // Skip running the effect on the initial render
-            isInitialRender.current = false;
-          } else {
-            let uri
-            if(searchUserValue){
-                uri =  `${process.env.REACT_APP_API_URL}/contact/${searchUserValue}`
-            }else{
-                uri = `h${process.env.REACT_APP_API_URL}/conversationList/${currentUserId}`
-            }
-
+        const getUser = (uri) =>{
             axios.get(uri,{
                 withCredentials: true, // Send credentials (cookies)
                 headers: {
@@ -28,15 +18,26 @@ export const SearchContact = ({currentUserId, updateContact}) => {
             })
             .catch((err) => console.log(err))
         }
+        if (isInitialRender.current) {
+            // Skip running the effect on the initial render
+            isInitialRender.current = false;
+          } else {            
+            if(searchUserValue){
+                getUser(`${process.env.REACT_APP_API_URL}/contact/${searchUserValue}`) 
+            }else{
+                getUser(`h${process.env.REACT_APP_API_URL}/conversationList/${currentUserId}`)
+            }   
+        }
     }, [searchUserValue])
 
     const handleSearch = (e) =>{
         setSearchUserValue(e.target.value)
     }
+    
 
   return (
     <div className="search-form-container w-full sticky top-0 left-0 ">
-        <form action="">
+        <form>
             <input type="text" placeholder="Search by username" 
             value={searchUserValue} onChange={handleSearch} 
             className='h-10 py-1 px-2 text-lg rounded-lg w-full border-solid border-2 border-black'/>
@@ -44,3 +45,5 @@ export const SearchContact = ({currentUserId, updateContact}) => {
     </div>
   )
 }
+
+// Working on the search functionality

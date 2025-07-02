@@ -85,7 +85,7 @@ const chatList = async (req, res) => {
       return {
         image: user["image"],
         username: user["username"],
-        id: user["_id"],
+        _id: user["_id"],
         lastMessage: convo?.latestMessage,
         time: convo?.time
       };
@@ -104,7 +104,7 @@ const searchByName = async (req, res) => {
     const searchname = req.params.contactName;
     const users = await UserModel.find({
       username: { $regex: new RegExp(searchname, 'i') }
-    });
+    }).select('-password');
     res.status(200).json(users);
   } catch (error) {
     console.error(error);
