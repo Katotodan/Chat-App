@@ -35,10 +35,11 @@ export const SearchContact = ({currentUserId, updateContact}) => {
     }
 
   return (
-    <div className="search-form-container">
+    <div className="search-form-container w-full sticky top-0 left-0 ">
         <form action="">
             <input type="text" placeholder="Search by username" 
-            value={searchUserValue} onChange={handleSearch}/>
+            value={searchUserValue} onChange={handleSearch} 
+            className='h-10 py-1 px-2 text-lg rounded-lg w-full border-solid border-2 border-black'/>
         </form>
     </div>
   )

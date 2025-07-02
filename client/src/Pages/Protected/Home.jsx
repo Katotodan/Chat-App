@@ -1,5 +1,4 @@
 import {useEffect, useState} from "react";
-import "./Home.css"
 import { Navbar } from "../../Components/Navbar/Navbar";
 
 import { ContactChat } from "../../Components/Contact-chat/Contact";
@@ -54,13 +53,13 @@ export const Home = () =>{
     return(        
         <div>
             <Navbar user={user}/>
-            <main>
-                <div className="contact--container">
+            <main className="flex relative">
+                <div className="contact--container absolute top-0 left-0 w-auto md:static md:flex-1">
                     <ContactChat setDestination = {toUser} 
                     setDestinationName ={toUser_name} currentUserId={user.id}/>    
                 </div>
                 
-                <div className="message--container">
+                <div className="message--container flex-1 md:flex-[3]">
                     {destination ? (
                         <Msg destination={destination} 
                             destinationName={destinationName} 
@@ -68,9 +67,9 @@ export const Home = () =>{
                             user = {user}
                         />
                     ): (  
-                        <div className="welcoming-msg">
-                            <h2 >Hey <strong>{user.username}</strong> ! Welcome to U-message!!!</h2>
-                            <h3>Select an user to start a conversation 😎😎😎</h3>
+                        <div className="welcoming-msg px-3 text-center text-2xl">
+                            <h2 className="mt-24">Hey <strong>{user.username}</strong>! <br/> Welcome to U-message!!!</h2>
+                            <p className="mt-20 text-center w-full">Select an user to start a conversation 😎😎😎</p>
                         </div>
                     )}
                     
@@ -80,3 +79,5 @@ export const Home = () =>{
         
     )
 }
+
+// Working on the hom page responsiveness

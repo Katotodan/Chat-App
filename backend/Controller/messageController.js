@@ -83,12 +83,14 @@ const chatList = async (req, res) => {
     const enrichedList = users.map(user => {
       const convo = conversations.find(c => c._id.toString() === user._id.toString());
       return {
-        ...user.toObject(),
+        image: user["image"],
+        username: user["username"],
+        id: user["_id"],
         lastMessage: convo?.latestMessage,
         time: convo?.time
       };
     });
-
+ 
     res.status(200).json(enrichedList);
   } catch (error) {
     console.error(error);
