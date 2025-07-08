@@ -4,6 +4,7 @@ import { SingleContact } from "./SingleContact";
 import { SearchContact } from "./SearchContact";
 import { socket } from "../../socket";
 import { getContact } from "../../lib/utils";
+import { emitter } from "../../socket";
 
 export const ContactChat = ({setDestination , setDestinationName, currentUserId})=>{
     const [contacts, setContact] = useState([])
@@ -16,10 +17,12 @@ export const ContactChat = ({setDestination , setDestinationName, currentUserId}
             setContact([...contacts])
         }
         conversations()
-        
+         
         socket.on('sendSpecificMsg', conversations);
+        emitter.on('updateContactList', conversations)
         return () => {
             socket.off('sendSpecificMsg', conversations);
+            emitter.off('updateContactList', conversations)
         };
     }, []) 
     

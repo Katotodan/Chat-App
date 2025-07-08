@@ -1,13 +1,14 @@
-import React,{useState, useEffect} from "react";
+import {useState, useEffect, useRef} from "react";
 import "./Message.css"
 import axios from "axios";
 import { SingleMsg } from "./SingleMsg";
 import { Textarea } from "./Textarea";
 import { socket } from "../../socket";
-
+import { emitter } from '../../socket'
 
 export const Msg = ({destination, destinationName, message, user}) =>{
     const [msgList, setMsgList] = useState([])
+    const msgContainerRef = useRef(null);
    
     // Get the message
     useEffect(() =>{
@@ -27,8 +28,14 @@ export const Msg = ({destination, destinationName, message, user}) =>{
         setMsgList(prev => [
             ...prev, 
             message
-        ]) 
+        ])
     }, [message])
+
+    useEffect(() => {
+        if (msgContainerRef.current) {
+        msgContainerRef.current.scrollTop = msgContainerRef.current.scrollHeight;
+        }
+    }, [msgList.length]);
 
     let previousDate = []
 
@@ -88,6 +95,9 @@ export const Msg = ({destination, destinationName, message, user}) =>{
                     }
                 socket?.emit("messageSend", [message, destination]) 
                 setMsgList(prev => [...prev, message])  
+                // Send eventemitter to the contact, so that it update the contact list
+                // Use mitt library to emit
+                emitter.emit('updateContactList')
             })
             .catch(err => console.error(err))
          
@@ -96,14 +106,12 @@ export const Msg = ({destination, destinationName, message, user}) =>{
 
     return( 
         <div className="allMsg-container">
-            <div className="messages" >
+            <div className="messages" ref={msgContainerRef}>
                 <h2>Chat with <strong>{destinationName}</strong></h2>
                 {messages}
                 
             </div>
-            <Textarea addMessage={addToMessage} destination={destination}/>
-            
-        </div>
-        
+            <Textarea addMessage={addToMessage} destination={destination}/>  
+        </div>  
     ) 
 }

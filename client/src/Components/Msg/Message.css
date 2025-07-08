@@ -1,9 +1,6 @@
 .allMsg-container{
-    /* display: flex;
-    flex-direction: column; */
     height: calc(100vh - 5rem);
     flex: 2;
-    /* height: auto; */
     width: auto;
     z-index: -5;
 

@@ -1,5 +1,7 @@
 import axios from 'axios'
-import React, {useState, useRef} from 'react'
+import {useState, useRef} from 'react'
+import { emitter } from '../../socket'
+
 
 export const SingleMsg = ({msg, destination}) => {
     const [displayDeletebtn, setDisplayDeletebtn] = useState(false)
@@ -19,6 +21,9 @@ export const SingleMsg = ({msg, destination}) => {
             }).then((res) => {
                 //  Display none the message
                 msgRef.current.style.display = "none"
+                // Send eventemitter to the contact, so that it update the contact list
+                // Use mitt library to emit
+                emitter.emit('updateContactList')
     
             }).catch(err => console.error(err)
         ) 
