@@ -16,7 +16,7 @@ export const loaderFunction = () =>{
         return res.data
         })
         .catch(err => {
-            console.log(err)
+            console.error(err)
             return redirect('/login');
         })
     )
@@ -40,7 +40,7 @@ export const loaderFunctionOnLogin = () =>{
         
         })
         .catch(err => {
-            console.log(err)
+            console.error(err)
             return null;
         })
     )

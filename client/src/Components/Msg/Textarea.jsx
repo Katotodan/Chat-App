@@ -23,6 +23,8 @@ export const Textarea = ({addMessage, destination}) => {
         e.preventDefault()
         addMessage(textareaValue)
         setTextareaValue("")
+        // Send eventemitter to the contact, so that it update the contact list
+        // Use mitt library to emit
            
     }
   return (

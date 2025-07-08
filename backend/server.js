@@ -83,14 +83,12 @@ io.on("connection", (socket) => {
         }  
     }) 
 
-    socket.on("messageSend", ([message, toUserId]) =>{
-        for(let i = 0; i < onlineUser.length; i++){
-            if(onlineUser[i]["userId"] == toUserId){
-                io.to(onlineUser[i]["socketId"]).emit("sendSpecificMsg", [getSenderId(socket.id), message])
-                break  
-            }  
-            
-        }     
+    
+    socket.on("messageSend", ([message, toUserId]) => {
+        const recipient = onlineUser.find(user => user.userId === toUserId);
+        if (recipient) {
+            io.to(recipient.socketId).emit("sendSpecificMsg", message);
+        } 
     })
 
     socket.on('disconnect', () => {

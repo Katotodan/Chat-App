@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const getTime = (time)=>{
     const date = new Date(time)
     const now = new Date()
@@ -16,4 +18,15 @@ export const getTime = (time)=>{
     }
     
     return date.toLocaleDateString('en-GB');
+}
+
+export const getContact = (currentUserId) =>{
+    return axios.get(`${process.env.REACT_APP_API_URL}/conversationList/${currentUserId}`,{
+        withCredentials: true, // Send credentials (cookies)
+        headers: {
+        'Content-Type': 'application/json',
+        //   Authorization: `Bearer ${sessionToken}`, // Include the session token in the Authorization header
+        },
+    })
+    .then((res) => res.data )
 }

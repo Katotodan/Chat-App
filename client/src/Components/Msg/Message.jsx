@@ -24,26 +24,13 @@ export const Msg = ({destination, destinationName, message, user}) =>{
     }, [destination])
     
     useEffect(() =>{
-        if(message[0] ===destination ){
-            setMsgList(prev => [
-                ...prev, 
-                {
-                    "message": message[1],
-                    "sender": "",
-                    "receiver": user.id,
-                    "time": new Date()
-                }
-            ])  
-        }
-        
+        setMsgList(prev => [
+            ...prev, 
+            message
+        ]) 
     }, [message])
 
-    
     let previousDate = []
-
-    
-
-
 
     const messages = msgList.map((element, index) =>{
 
@@ -75,8 +62,6 @@ export const Msg = ({destination, destinationName, message, user}) =>{
             }
         }
 
-
-
         return (
             <div key={index}>
                 <h3 className="message-date">{outPutDate}</h3>
@@ -94,17 +79,17 @@ export const Msg = ({destination, destinationName, message, user}) =>{
                 },
             })
             .then( (res) => {
-                socket?.emit("messageSend", [e, destination])
-                setMsgList(prev => [...prev, 
-                    {
+                const message = {
                         "message": e,
                         "sender": user.id,
                         "receiver": destination,
-                        "time": new Date()
+                        "time": new Date(),
+                        "_id": res.data._id
                     }
-                ])  
+                socket?.emit("messageSend", [message, destination]) 
+                setMsgList(prev => [...prev, message])  
             })
-            .catch(err => console.log(err))
+            .catch(err => console.error(err))
          
     }
     
@@ -121,5 +106,4 @@ export const Msg = ({destination, destinationName, message, user}) =>{
         </div>
         
     ) 
-}  
-// Working on textarea then make the home page responsive  
+}

@@ -20,7 +20,7 @@ export const SingleMsg = ({msg, destination}) => {
                 //  Display none the message
                 msgRef.current.style.display = "none"
     
-            }).catch(err => console.log(err)
+            }).catch(err => console.error(err)
         ) 
     }
   return (

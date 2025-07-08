@@ -1,50 +1,5 @@
 const { MsgModel,UserModel } = require("../DB/DBmodel")
 
-// const chatList = async function(req,res){
-//     try {
-//       const conversations = await MsgModel.aggregate([
-//         // Find all message with sender or receiver is equal to currentUserId
-//         {
-//           $match: {
-//             $or: [
-//               { sender: req.params.currentUserId },
-//               { receiver: req.params.currentUserId }
-//             ]
-//           }
-//         },
-//         // Group by sender and receiver, keeping only the latest message in each group
-//         {
-//           $group: {
-//             _id: { sender: "$sender", receiver: "$receiver" },
-//           }
-//         },
-
-//       ])
-//       // Filtering the conversationList
-//       const conversationList = conversations.map(element =>{
-//           if(element._id["sender"] === req.params.currentUserId){
-//             return({
-//               _id: element._id["receiver"],
-//             })
-//           }
-//           return({
-//             _id: element._id["sender"],
-//           })
-//       })
-//       // Get all the user inside conversationList
-//       const users = await UserModel.find({
-//         $or: conversationList
-//       }).exec()
-//       res.json(users)
-//     } catch (error) {
-//       console.log(error);
-//       res.send([])
-      
-//     }
-// }
-
-
-// Get chat list (unique users this user has conversations with)
 const chatList = async (req, res) => {
   try {
     const currentUserId = req.params.currentUserId;
@@ -59,28 +14,33 @@ const chatList = async (req, res) => {
         }
       },
       {
-        $sort: { time: -1 }
+        $sort: { time: 1 } // Ensure messages are ordered by time for correct $last
       },
       {
         $group: {
           _id: {
             $cond: [
               { $eq: ["$sender", currentUserId] },
-              "$receiver",
-              "$sender"
+              "$receiver", // if sender is me → group by receiver
+              "$sender"    // else → group by sender
             ]
           },
-          latestMessage: { $first: "$message" },
-          time: { $first: "$time" }
+          latestMessage: { $last: "$message" },
+          time: { $last: "$time" }
         }
+      },
+      {
+        $sort: { time: -1 } // Optional: show most recent conversation first
       }
     ]);
 
     // Get full user info for chat list
     const userIds = conversations.map(conv => conv._id);
     const users = await UserModel.find({ _id: { $in: userIds } });
+    const userMap = new Map(users.map(user => [user._id.toString(), user]));
+    const orderedUsers = userIds.map(id => userMap.get(id.toString()));
 
-    const enrichedList = users.map(user => {
+    const enrichedList = orderedUsers.map(user => {
       const convo = conversations.find(c => c._id.toString() === user._id.toString());
       return {
         image: user["image"],
@@ -102,8 +62,10 @@ const chatList = async (req, res) => {
 const searchByName = async (req, res) => {
   try {
     const searchname = req.params.contactName;
+    const currentUserId = req.user.id;
     const users = await UserModel.find({
-      username: { $regex: new RegExp(searchname, 'i') }
+      username: { $regex: new RegExp(searchname, 'i') },
+      _id: { $ne: currentUserId } // Exclude current user
     }).select('-password');
     res.status(200).json(users);
   } catch (error) {

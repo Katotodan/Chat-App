@@ -1,28 +1,26 @@
-import React, {useEffect, useState, useRef} from "react";
+import {useEffect, useState, useRef} from "react";
 import axios from "axios";
 import { SingleContact } from "./SingleContact";
 import { SearchContact } from "./SearchContact";
+import { socket } from "../../socket";
+import { getContact } from "../../lib/utils";
 
 export const ContactChat = ({setDestination , setDestinationName, currentUserId})=>{
     const [contacts, setContact] = useState([])
-    const menu = useRef(null)
     const menuContainer = useRef(null)
     const [isMenuIcon, setIsMenuIcon]  = useState(true)
-    
 
     useEffect( () => {
-        axios.get(`${process.env.REACT_APP_API_URL}/conversationList/${currentUserId}`,{
-            withCredentials: true, // Send credentials (cookies)
-            headers: {
-            'Content-Type': 'application/json',
-            //   Authorization: `Bearer ${sessionToken}`, // Include the session token in the Authorization header
-            },
-        })
-        .then((res) => {
-            console.log(res.data)
-            setContact([...res.data])
-        })
-        .catch((err) => console.log(err))
+        const conversations = async() =>{
+            const contacts = await getContact(currentUserId)
+            setContact([...contacts])
+        }
+        conversations()
+        
+        socket.on('sendSpecificMsg', conversations);
+        return () => {
+            socket.off('sendSpecificMsg', conversations);
+        };
     }, []) 
     
     const displayMenu = (e)=>{ isMenuIcon ? setIsMenuIcon(false) : setIsMenuIcon(true)}
@@ -45,7 +43,7 @@ export const ContactChat = ({setDestination , setDestinationName, currentUserId}
 
     return(
         <>
-        <div className="h-6 md:hidden absolute top-0 left-2" onClick={displayMenu} >
+        <div className="h-6 md:hidden absolute top-0 left-2 z-10" onClick={displayMenu} >
                 {isMenuIcon ? <span className="text-2xl cursor-pointer">&#8801;</span>: 
                 <span className="text-red-600 bg-gray-100 text-2xl  w-full cursor-pointer">&#10006;</span>}
         </div>

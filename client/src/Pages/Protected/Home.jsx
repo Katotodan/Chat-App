@@ -23,8 +23,8 @@ export const Home = () =>{
             socket.emit("user_disconnect", user.id)
         }
     
-        function sendSpecificMsg([senderId, message]) {
-            setNewMsg([senderId, message])
+        function sendSpecificMsg(message) {
+            setNewMsg(message)
         }     
       
         socket.on('disconnect', onDisconnect);
@@ -37,7 +37,6 @@ export const Home = () =>{
         };
         
     },[]) 
-    
 
     const [destination, setDestination] = useState("")
     const [destinationName, setDestinationName] = useState("")
@@ -48,7 +47,6 @@ export const Home = () =>{
     const toUser_name = (name) =>{
         setDestinationName(name)
     }
-    
     
     return(        
         <div>
@@ -79,5 +77,3 @@ export const Home = () =>{
         
     )
 }
-
-// Working on the hom page responsiveness
