@@ -1,6 +1,8 @@
 const express = require('express');
 const {UserModel} = require("../DB/DBmodel")
 const passport = require("../Controller/passport.js")
+const bcrypt = require('bcrypt');
+require('dotenv').config();
 
 const router = express.Router();
 
@@ -26,17 +28,22 @@ router.post('/signup', async (req, res, next) => {
   try {
     const user = await UserModel.findOne({username: req.body.username}).exec()
     if(!user){
-      const user = await UserModel.create({
-        "username": req.body.username,
-        "password": req.body.password,
-        "image": req.body.image
+      // Hash password
+      const saltRounds = 10;
+      bcrypt.hash(req.body.password, saltRounds, async function(err, hash) {
+          // Store hash in your password DB.
+          if(err) { throw new Error('Something wrong happened, try again.') }
+          const user = await UserModel.create({
+            "username": req.body.username,
+            "password": hash,
+            "image": req.body.image
+          })
+          user.save()
+          req.logIn(user, (err) =>{
+            if(err) { throw new Error('Something wrong happened, try again.') }
+            res.redirect('/')
+          })
       })
-      user.save()
-      req.logIn(user, (err) =>{
-        if(err) { throw new Error('Something wrong happened, try again.') }
-        res.redirect('/')
-      })
-      
     }else{
       throw new Error('Username already exist')
     }

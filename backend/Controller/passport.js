@@ -1,17 +1,32 @@
-// Importing imported package
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
-const crypto = require('crypto')
 const { UserModel } = require('../DB/DBmodel.js')
+const bcrypt = require('bcrypt');
+require('dotenv').config();
+
+const PEPPER = process.env.PEPPER;
 
 
 passport.use(new LocalStrategy(async function verify(username, password, cb) {
-    const user = await UserModel.findOne({username: username, password: password}).exec()
-    if(user){
-        return cb(null, user)
-    }else{
-        return cb(null, false, { message: 'Incorrect username or password.' });
-    } 
+    try {
+        const user = await UserModel.findOne({ username }).exec();
+
+        if (!user) {
+        return cb(null, false, { message: 'No account found' });
+        }
+
+        bcrypt.compare(password, user.password, function(err, result) {
+        if (err) return cb(err);
+        if (!result) {
+            return cb(null, false, { message: 'Incorrect password' });
+        }
+        return cb(null, user);
+        });
+    } catch (err) {
+        return cb(err);
+    }
+    
+    
     
 }));
 
