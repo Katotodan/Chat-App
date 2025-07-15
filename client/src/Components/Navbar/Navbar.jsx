@@ -4,11 +4,13 @@ import "./navbar.css"
 import { Navigate } from "react-router-dom"
 import { socket } from "../../socket"
 import logo from "../../asserts/logo.png"
+import { useLocation } from "react-router-dom"
 
 export const Navbar = ({user}) =>{
     const [redirectUser, setRedirectUser] = useState(false)
     const [showLogout, setShowLogout] = useState(false);
     const menuContentRef = useRef(null)
+    let location = useLocation()
 
     const toggleLogout  = () =>{ setShowLogout(prev => !prev)}
 
@@ -23,6 +25,9 @@ export const Navbar = ({user}) =>{
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [])
+    useEffect(() => {
+        setShowLogout(false)
+    }, [location]);
     const handleLogout = (e) =>{
         e.preventDefault() 
         axios.post(process.env.REACT_APP_API_URL +"/logout", user, {
@@ -68,6 +73,3 @@ export const Navbar = ({user}) =>{
         </nav> 
     )
 }
-
-// Contuine working on the navbar, the click on outside as well as inside effect
-// Working on z-index

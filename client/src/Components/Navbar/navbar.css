@@ -38,6 +38,7 @@ form button{
     gap: 1rem;
     flex-direction: column;
     align-items: center;
+    z-index: 99;
 }
 .user div:last-child{
     opacity: 0;
