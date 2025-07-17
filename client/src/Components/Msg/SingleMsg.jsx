@@ -6,12 +6,10 @@ import { emitter } from '../../socket'
 export const SingleMsg = ({msg, destination}) => {
     const [displayDeletebtn, setDisplayDeletebtn] = useState(false)
     const msgRef = useRef(null)
-    const handleMsgClick = ()=>{
-        displayDeletebtn ? setDisplayDeletebtn(false) :setDisplayDeletebtn(true)
+    const handleMsgClick = ()=> setDisplayDeletebtn(prev => !prev)
         
-    }
     const deleteMsg = ()=>{
-        axios.delete(`http://localhost:5000/deleteMsg/${msg._id}`,
+        axios.delete(`${process.env.REACT_APP_API_URL}/deleteMsg/${msg._id}`,
             {
               withCredentials: true, // Send credentials (cookies)
               headers: {
@@ -28,6 +26,8 @@ export const SingleMsg = ({msg, destination}) => {
             }).catch(err => console.error(err)
         ) 
     }
+    const msgHour = new Date(msg.time).getHours()
+    const msgMinute = new Date(msg.time).getMinutes()
   return (
     <div className={msg.receiver == destination ?  "msg-container me" : "msg-container other"}
     ref={msgRef}>
@@ -36,7 +36,7 @@ export const SingleMsg = ({msg, destination}) => {
                 {msg.message}
             </div>
             <div className="time">
-                {new Date(msg.time).getHours()}: {new Date(msg.time).getMinutes()}
+                {msgHour > 9 ? msgHour : `0${msgHour}`}: {msgMinute > 9 ? msgMinute : `0${msgMinute}`}
             </div>
         </div>
         {displayDeletebtn && <div className='delete' onClick={deleteMsg}>X</div>}

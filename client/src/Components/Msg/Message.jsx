@@ -12,7 +12,7 @@ export const Msg = ({destination, destinationName, message, user}) =>{
    
     // Get the message
     useEffect(() =>{
-        axios.get(`http://localhost:5000/getMsg/${user.id}/${destination}`,{
+        axios.get(`${process.env.REACT_APP_API_URL}/getMsg/${user.id}/${destination}`,{
             withCredentials: true, // Send credentials (cookies)
             headers: {
             'Content-Type': 'application/json',
@@ -41,23 +41,22 @@ export const Msg = ({destination, destinationName, message, user}) =>{
 
     const messages = msgList.map((element, index) =>{
 
-        const dateObject = new Date(element.time);
-        const inputYear = dateObject.getFullYear()
-        const inputMonth = dateObject.getMonth()
-        const inputDay = dateObject.getDate()
+        const messageYear = new Date(element.time).getFullYear()
+        const messageMonth = new Date(element.time).getMonth()
+        const messageDay = new Date(element.time).getDate()
 
         const currentYear = new Date().getFullYear()
         const currentMonth = new Date().getMonth()
         const currentDay = new Date().getDate()
 
-        const newTime = [inputDay, inputMonth, inputYear]
+        const newTime = [messageDay, messageMonth, messageYear]
         let outPutDate = ""
-        if(inputDay === currentDay && inputMonth === currentMonth && inputYear === currentYear){
+        if(messageDay === currentDay && messageMonth === currentMonth && messageYear === currentYear){
             if(newTime[0] !== previousDate[0]){
                 previousDate = newTime
                 outPutDate = "Today"
             }
-        }else if(inputDay === currentDay -1 && inputMonth === currentMonth && inputYear === currentYear){
+        }else if(messageDay === currentDay -1 && messageMonth === currentMonth && messageYear === currentYear){
             if(newTime[0] !== previousDate[0]){
                 previousDate = newTime
                 outPutDate = "Yesterday"
@@ -65,20 +64,20 @@ export const Msg = ({destination, destinationName, message, user}) =>{
         }else{
             if(newTime[0] !== previousDate[0] && newTime[1] !== previousDate[1] && newTime[2] !== previousDate[2]){
                 previousDate = newTime
-                outPutDate = inputDay + "th " + inputMonth + ", " + inputYear
+                outPutDate = messageDay + "/" + messageMonth + "/" + messageYear
             }
         }
 
         return (
             <div key={index}>
-                <h3 className="message-date">{outPutDate}</h3>
+                {outPutDate && <h3 className="message-date">{outPutDate}</h3>}
                 <SingleMsg msg={element} destination={destination}/>
             </div>
             
         )
     })
     const addToMessage = (e)=>{
-        axios.post(`http://localhost:5000/postMsg/${user.id}/${destination}`,
+        axios.post(`${process.env.REACT_APP_API_URL}/postMsg/${user.id}/${destination}`,
             {"textMessage" : e}, {
                 withCredentials: true, // Send credentials (cookies)
                 headers: {
@@ -102,14 +101,12 @@ export const Msg = ({destination, destinationName, message, user}) =>{
             .catch(err => console.error(err))
          
     }
-    
 
     return( 
         <div className="allMsg-container">
             <div className="messages" ref={msgContainerRef}>
                 <h2>Chat with <strong>{destinationName}</strong></h2>
-                {messages}
-                
+                {messages}   
             </div>
             <Textarea addMessage={addToMessage} destination={destination}/>  
         </div>  
